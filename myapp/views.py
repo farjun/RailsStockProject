@@ -16,7 +16,17 @@ def index(request):
 # View for the single stock page
 # symbol is the requested stock's symbol ('AAPL' for Apple)
 def single_stock(request, symbol):
+	
 	data = stock_api.get_stock_info(symbol)
+	all_companies = stock_api.get_currency()
+	#check for currency type and add it to data
+	for object in all_companies:
+		if object['symbol'] == symbol:
+			currency = object['currency']
+			break
+
+	data['currency'] = currency
+
 	return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data})
 
 
