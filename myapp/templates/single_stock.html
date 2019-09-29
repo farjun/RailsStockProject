@@ -56,7 +56,12 @@
 	</div>
 
 	<div class="pt-4 col-sm-6">
+		<h3>Price over time</h3>
 		<canvas id="stockChart"></canvas>
+		<br>
+		<h3>Change over time</h3>
+		<canvas id="changeOverTime"></canvas>
+
 		<!-- WIP TAB DESIGN
 		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 		  <li class="nav-item">
@@ -114,5 +119,39 @@
 			});
 		});
 	});
+
+	
+</script>
+<script>
+	$(document).ready(function(){
+	$.get( "/historic/{{ data.symbol }}/", function( data ) {
+			historic_data = data.data.sort(function(a, b) { return a.date - b.date; })
+
+			var ctxL = document.getElementById("changeOverTime").getContext('2d');
+			var myLineChart = new Chart(ctxL, {
+				type: 'line',
+				data: {
+					labels: historic_data.map(d => d.label),
+					datasets: [
+						{
+							label: "{{ data.symbol }}",
+							data: historic_data.map(d => d.changeOverTime),
+							backgroundColor: [
+								'rgba(0, 100, 50, .2)',
+							],
+							borderColor: [
+								'rgba(0, 200, 50, .7)',
+							],
+							borderWidth: 2
+						}
+					]
+				},
+				options: {
+					responsive: true
+				}
+			});
+		});
+	});
+
 </script>
 {% endblock %}
