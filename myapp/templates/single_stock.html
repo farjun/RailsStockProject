@@ -52,64 +52,117 @@
 		</dl>
 	</div>
 
-	<div class="pt-4 col-sm-6">
+{#	<div class="pt-4 col-sm-6">#}
+{#        </div>#}
+
+    <div class="chart" style="position: relative; height:80vh; width:80vw; padding-left: 10vw">
+  <canvas id="stockChart"></canvas>
+</div>
 		<canvas id="stockChart"></canvas>
-		<!-- WIP TAB DESIGN
-		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-		  <li class="nav-item">
-			<a class="nav-link" data-toggle="pill" href="#1w" role="tab" aria-controls="pills-home" aria-selected="true">1W</a>
+		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" >
+		  <li class="nav-item" id="1m"  onclick="myFunction(this.id)">
+			<a class="nav-link active" data-toggle="pill" href="/1m" role="tab" aria-controls="pills-profile" aria-selected="true">1M</a>
 		  </li>
-		  <li class="nav-item">
-			<a class="nav-link active" data-toggle="pill" href="#1m" role="tab" aria-controls="pills-profile" aria-selected="false">1M</a>
+		  <li class="nav-item" id="3m" onclick="myFunction(this.id)">
+			<a class="nav-link" data-toggle="pill" href="/3m" role="tab" aria-controls="pills-contact" aria-selected="true">3M</a>
 		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" data-toggle="pill" href="#3m" role="tab" aria-controls="pills-contact" aria-selected="false">3M</a>
+			<li class="nav-item" id="6m" onclick="myFunction(this.id)">
+			<a class="nav-link" data-toggle="pill" href="/6m" role="tab" aria-controls="pills-contact" aria-selected="true">6M</a>
 		  </li>
-			<li class="nav-item">
-			<a class="nav-link" data-toggle="pill" href="#6m" role="tab" aria-controls="pills-contact" aria-selected="false">6M</a>
+			<li class="nav-item" id="1y" onclick="myFunction(this.id)">
+			<a class="nav-link" data-toggle="pill" href="/1y" role="tab" aria-controls="pills-contact" aria-selected="true">1Y</a>
 		  </li>
-			<li class="nav-item">
-			<a class="nav-link" data-toggle="pill" href="#1y" role="tab" aria-controls="pills-contact" aria-selected="false">1Y</a>
-		  </li>
-			<li class="nav-item">
-			<a class="nav-link" data-toggle="pill" href="#max" role="tab" aria-controls="pills-contact" aria-selected="false">Max</a>
+			<li class="nav-item" id="max" onclick="myFunction(this.id)">
+			<a class="nav-link" data-toggle="pill" href="/max" role="tab" aria-controls="pills-contact" aria-selected="true">Max</a>
 		  </li>
 		</ul>
-		-->
+
 	</div>
+
+
+    <div class="chart" style="position: relative; height:80vh; width:90vw">
+  <canvas id="stockChart"></canvas>
 </div>
 {% endblock %}
 
-{% block scripts %}
-<script>
-	$(document).ready(function(){
-		$.get( "/historic/{{ data.symbol }}/", function( data ) {
-			historic_data = data.data.sort(function(a, b) { return a.date - b.date; })
 
-			var ctxL = document.getElementById("stockChart").getContext('2d');
-			var myLineChart = new Chart(ctxL, {
-				type: 'line',
-				data: {
-					labels: historic_data.map(d => d.label),
-					datasets: [
-						{
-							label: "{{ data.symbol }}",
-							data: historic_data.map(d => d.close),
-							backgroundColor: [
-								'rgba(105, 0, 132, .2)',
-							],
-							borderColor: [
-								'rgba(200, 99, 132, .7)',
-							],
-							borderWidth: 2
-						}
-					]
-				},
-				options: {
-					responsive: true
-				}
-			});
-		});
-	});
-</script>
-{% endblock %}
+{% block scripts %}
+    <script>
+
+
+        function BuildChart(labels, values, chartTitle) {
+            var data = {
+                labels: labels,
+                datasets: [{
+                    label: chartTitle, // Name the series
+                    data: values,
+                    fill: true,
+                    backgroundColor: ['rgba(105, 0, 132, .2)',
+                    ],
+                    borderColor: [
+                        'rgba(200, 99, 132, .7)',
+                    ],
+                }],
+            };
+            var ctx = document.getElementById("stockChart").getContext('2d');
+            if(window.bar != undefined)
+                window.bar.destroy();
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true, // Instruct chart JS to respond nicely.
+                    maintainAspectRatio: false, // Add to prevent default behavior of full-width/height
+
+                    scales: {
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Date'
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Price'
+                            }
+                        }]
+                    },
+                }
+            });
+            return myChart;
+        }
+
+        function myFunction(clicked_button) {
+
+        navId = clicked_button;
+
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var json = JSON.parse(this.response);
+
+                var labels = json.map(function (e) {
+                    return e.date;
+                });
+
+                var values = json.map(function (e) {
+                    return (e.close);
+                });
+
+                BuildChart(labels, values, "Prices over time");
+            }
+        };
+
+        xhttp.open("GET", "https://sandbox.iexapis.com/stable/stock/{{ data.symbol }}/chart/"+navId+"?token=Tpk_087a52e2547e449e9cee8748f00491eb", false);
+        xhttp.send();
+        }
+
+    </script>
+
+    <script>
+
+    </script>
+{% endblock scripts%}
+

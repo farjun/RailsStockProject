@@ -1,4 +1,5 @@
 from django.db import models
+import requests
 
 
 # Create your models here.
@@ -10,4 +11,5 @@ class Stock(models.Model):
 	change = models.FloatField(null=True)
 	change_percent = models.FloatField()
 	market_cap = models.FloatField(null=True)
-	primary_exchange = models.CharField(null=True, max_length=32)
+	primary_exchange = models.CharField(null=True, max_length=32) # NASDAQ
+

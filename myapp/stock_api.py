@@ -2,7 +2,7 @@ import requests
 
 # Sandbox API - FOR TESTING
 BASE_URL = 'https://sandbox.iexapis.com'
-PUBLIC_TOKEN = 'Tpk_c818732500c24764801eb121fa658bb6'
+PUBLIC_TOKEN = 'Tpk_087a52e2547e449e9cee8748f00491eb'
 
 # Real API - FOR PRODUCTION
 # YOU NEED TO CREATE AN ACCOUNT TO RECEIVE YOUR OWN API KEYS (its free)
@@ -47,3 +47,15 @@ def get_stock_info(symbol):
 
 def get_stock_historic_prices(symbol, time_range='1m'):
 	return _request_data('/stable/stock/{symbol}/chart/{time_range}'.format(symbol=symbol, time_range=time_range))
+
+
+def get_financial_info(symbol):
+
+	return _request_data('/stable/stock/{symbol}/financials/'.format(symbol=symbol),
+							  additional_parameters={'displayPercent': 'true'})
+
+
+def get_financial_report(symbol):
+
+	return _request_data('/stable/stock/{symbol}/financials/'.format(symbol=symbol),
+							  additional_parameters={'displayPercent': 'true'})

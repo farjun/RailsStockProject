@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{#This data needs to be changed as needed#}
+{% block content %}
+<title>Financial Report</title>
+    <div class="col-md-12 text-left">
+        <h2>Financial Report</h2>
+		<h3 class="display-4">
+				{{ data.symbol }}
+				<small class="text-muted">({{ data.symbol }})</small>
+		</h3>
+</div>
+<div class="row">
+	<div class="pt-4 col-sm-6 pl-5">
+		<dl class="row text-left">
+			<dt class="col-sm-6">Results </dt>
+			<dd class="col-sm-6">{{ data.financials}}</dd>
+
+		</dl>
+	</div>
+</div>
+ {% endblock content %}
+</html>

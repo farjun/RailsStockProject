@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{#This data needs to be changed as needed#}
+{% block content %}
+<title>Financial Report</title>
+    <div class="col-md-12 text-left">
+        <h4>Enter the symbol of the company</h4>
+        <input type="text" placeholder="Enter symbol" id="stock-symbol1" name="symbol1"/>
+        <button id="compare-stocks" >Go</button>
+
+</div>
+<div class="row">
+	<div class="pt-4 col-sm-6 pl-5">
+		<dl class="row text-left">
+			<dt class="col-sm-6">Open</dt>
+			<dd class="col-sm-6">{{ data.open }}</dd>
+
+			<dt class="col-sm-6">Volume</dt>
+			<dd class="col-sm-6">{{ data.volume }}
+			</dd>
+
+			<dt class="col-sm-6">52 Weeks Low</dt>
+			<dd class="col-sm-6">{{ data.week52Low }}</dd>
+
+			<dt class="col-sm-6">52 Weeks High</dt>
+			<dd class="col-sm-6">{{ data.week52High }}</dd>
+
+			<dt class="col-sm-6">Year Change</dt>
+			<dd class="col-sm-6">{{ data.ytdChange }}</dd>
+
+			<dt class="col-sm-6">Market Cap</dt>
+			<dd class="col-sm-6">{{ data.marketCap }}</dd>
+		</dl>
+	</div>
+</div>
+ {% endblock content %}
+</html>
+
+
+{% block scripts %}
+    <script>
+    document.getElementById('compare-stocks').onclick = function() {
+        var symbol = document.getElementById('stock-symbol1').value;
+    }
+    </script>
+{% endblock scripts %}

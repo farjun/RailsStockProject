@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<input type="text" placeholder="Enter First symbol" id="stock-symbol1" name="symbol1"/>
+<input type="text" placeholder="Enter second symbol" id="stock-symbol2" name="symbol2"/>
+
+<div id="json-data"></div>
+<button id="compare-stocks">Compare</button>
+{% endblock content %}
+
+{% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(()=>{
+            $('compare-stocks').click(()=>{
+
+                const symbol1 = $('#stock-symbol1').val();
+                const symbol2 = $('#stock-symbol2').val();
+
+                $.ajax({
+                    method:'GET',
+                    data:{
+                        symbol1: symbol1,
+                        symbol2: symbol2
+                    },
+                    success: (data)=>{
+                        $('#json-data').val(JSON.stringify(data))
+                    },
+                    error: (err)=>{
+                        $('#json-data').val('Error Request')
+                    }
+                })
+            })
+        })
+    </script>
+
+{% endblock %}

@@ -4,6 +4,8 @@ from myapp.models import Stock
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from django.views.generic import View
+
 
 
 # View for the home page - a list of 20 of the most active stocks
@@ -18,6 +20,12 @@ def index(request):
 def single_stock(request, symbol):
 	data = stock_api.get_stock_info(symbol)
 	return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data})
+
+def two_stocks(request, symbol1,symbol2):
+	data1 = stock_api.get_stock_info(symbol1)
+	data2 = stock_api.get_stock_info(symbol2)
+	return render(request, 'compareTemp.html', {'data1': data1,'data2':data2})
+
 
 
 def register(request):
@@ -42,10 +50,36 @@ def logout_view(request):
 	logout(request)
 	return redirect('index')
 
-
 # API for a stock's price over time
 # symbol is the requested stock's symbol ('AAPL' for Apple)
 # The response is JSON data of an array composed of "snapshot" objects (date + stock info + ...), usually one per day
+
 def single_stock_historic(request, symbol):
 	data = stock_api.get_stock_historic_prices(symbol, time_range='1m')
 	return JsonResponse({'data': data})
+
+def single_stock_financial(request, symbol):
+	data = stock_api.get_financial_info(symbol)
+	return render(request,'financial.html',{'data': data})
+
+
+class CompareView(View):
+    def post(self, request):
+        symbol1 = request.POST['symbol1']
+        symbol2 = request.POST['symbol2']
+
+        stock1 = stock_api.get_financial_report(symbol1)
+        stock2 = stock_api.get_financial_report(symbol2)
+
+        return JsonResponse([stock1, stock2])
+
+    def get(self, request):
+        return render(request, 'compare.html')
+
+
+
+
+
+
+
+
