@@ -1,0 +1,38 @@
+[2019-09-30 00:08:30.186] [exthost] [info] extension host started
+[2019-09-30 00:08:30.198] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:30.198] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/debug-auto-launch/dist/extension
+[2019-09-30 00:08:30.200] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:30.200] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/emmet/dist/extension
+[2019-09-30 00:08:30.236] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:30.236] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/git/dist/main
+[2019-09-30 00:08:30.315] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:30.315] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/merge-conflict/dist/extension
+[2019-09-30 00:08:30.320] [exthost] [info] ExtensionService#_doActivateExtension ms-vsliveshare.vsliveshare {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:30.320] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/majd/.vscode/extensions/ms-vsliveshare.vsliveshare-1.0.869/out/prod/extension-prod
+[2019-09-30 00:08:30.919] [exthost] [info] eager extensions activated
+[2019-09-30 00:08:47.320] [exthost] [info] extension host started
+[2019-09-30 00:08:47.325] [exthost] [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:47.325] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/debug-auto-launch/dist/extension
+[2019-09-30 00:08:47.328] [exthost] [info] ExtensionService#_doActivateExtension vscode.emmet {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:47.328] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/emmet/dist/extension
+[2019-09-30 00:08:47.365] [exthost] [info] ExtensionService#_doActivateExtension vscode.git {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:47.365] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/git/dist/main
+[2019-09-30 00:08:47.444] [exthost] [info] ExtensionService#_doActivateExtension vscode.merge-conflict {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:47.444] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/merge-conflict/dist/extension
+[2019-09-30 00:08:47.448] [exthost] [info] ExtensionService#_doActivateExtension ms-vsliveshare.vsliveshare {"startup":true,"activationEvent":"*"}
+[2019-09-30 00:08:47.449] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/majd/.vscode/extensions/ms-vsliveshare.vsliveshare-1.0.869/out/prod/extension-prod
+[2019-09-30 00:08:48.039] [exthost] [info] eager extensions activated
+[2019-09-30 00:09:00.001] [exthost] [info] ExtensionService#_doActivateExtension vscode.configuration-editing {"startup":false,"activationEvent":"onLanguage:jsonc"}
+[2019-09-30 00:09:00.001] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/configuration-editing/dist/extension
+[2019-09-30 00:09:00.009] [exthost] [info] ExtensionService#_doActivateExtension vscode.json-language-features {"startup":false,"activationEvent":"onLanguage:jsonc"}
+[2019-09-30 00:09:00.009] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/json-language-features/client/dist/jsonMain
+[2019-09-30 00:09:00.081] [exthost] [info] ExtensionService#_doActivateExtension vscode.typescript-language-features {"startup":false,"activationEvent":"onLanguage:jsonc"}
+[2019-09-30 00:09:00.081] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/typescript-language-features/dist/extension
+[2019-09-30 00:09:03.045] [exthost] [info] ExtensionService#_doActivateExtension vscode.python {"startup":false,"activationEvent":"onLanguage:python"}
+[2019-09-30 00:09:03.045] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/python/dist/pythonMain
+[2019-09-30 00:09:03.046] [exthost] [info] ExtensionService#_doActivateExtension ms-python.python {"startup":false,"activationEvent":"onLanguage:python"}
+[2019-09-30 00:09:03.046] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/majd/.vscode/extensions/ms-python.python-2019.9.34911/out/client/extension
+[2019-09-30 00:09:03.617] [exthost] [info] ExtensionService#_doActivateExtension njpwerner.autodocstring {"startup":false,"activationEvent":"onLanguage:python"}
+[2019-09-30 00:09:03.617] [exthost] [info] ExtensionService#loadCommonJSModule file:///home/majd/.vscode/extensions/njpwerner.autodocstring-0.3.0/out/extension.js
+[2019-09-30 00:48:02.564] [exthost] [info] ExtensionService#_doActivateExtension vscode.html-language-features {"startup":false,"activationEvent":"onLanguage:html"}
+[2019-09-30 00:48:02.564] [exthost] [info] ExtensionService#loadCommonJSModule file:///usr/share/code/resources/app/extensions/html-language-features/client/dist/htmlMain

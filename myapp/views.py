@@ -4,6 +4,13 @@ from myapp.models import Stock
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from myapp.models import Comment
+from django.template import RequestContext
+from django.http import HttpResponseRedirect
+
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
+
 
 
 # View for the home page - a list of 20 of the most active stocks
@@ -19,6 +26,7 @@ def single_stock(request, symbol):
 	
 	data = stock_api.get_stock_info(symbol)
 	all_companies = stock_api.get_currency()
+	comments = Comment.objects.filter(stock_id = symbol)
 	#check for currency type and add it to data
 	for object in all_companies:
 		if object['symbol'] == symbol:
@@ -26,8 +34,9 @@ def single_stock(request, symbol):
 			break
 
 	data['currency'] = currency
+	
 
-	return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data})
+	return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data, 'comments':comments})
 
 
 def register(request):
@@ -59,3 +68,24 @@ def logout_view(request):
 def single_stock_historic(request, symbol):
 	data = stock_api.get_stock_historic_prices(symbol, time_range='1m')
 	return JsonResponse({'data': data})
+
+#add comments to a specific task
+@csrf_protect
+def add_stock_comment(request):
+	
+	if request.method == 'POST':
+		
+		if request.POST.get('title') and request.POST.get('content'):
+			comment= Comment()
+			comment.author = request.POST.get('title')
+			comment.text= request.POST.get('content')
+			comment.stock_id = request.POST.get('stock_id')
+			symbol = request.POST.get('stock_id')
+			
+			comment.save()
+
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+
+

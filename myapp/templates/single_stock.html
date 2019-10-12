@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+
+
 <div id= "symb1" class="col-md-12 text-left">
 		<h2 id="symb2" class="display-4">
 				{{ data.companyName }}
@@ -54,7 +57,18 @@
 			<dt class="col-sm-6">Currency</dt>
 			<dd class="col-sm-6">{{ data.currency }}</dd>
 		</dl>
+		<br>
+		<form action="{% url 'add_comment' %}" method="POST">
+			{% csrf_token %}
+			<input type="hidden" name="stock_id" value="{{ data.symbol }}" />
+			Title: <input type="text" name="title"/><br/>
+			Content: <br/>
+			<textarea cols="35" rows="8" name="content">
+			</textarea><br/>
+			<input type="submit" value="Post"/>
+			</form>
 	</div>
+	
 
 	<div class="pt-4 col-sm-6">
 		<h3>Price over time</h3>
@@ -62,6 +76,17 @@
 		<br>
 		<h3>Change over time</h3>
 		<canvas id="changeOverTime"></canvas>
+		
+		<hr>
+		<h3>Comments:</h3>
+    	{% for comment in comments %}
+    	<p>
+        date: {{comment.created_date }}&nbsp;
+        <b>{{ comment.author }}</b> wrote:
+    	</p>
+    	<p>{{ comment.text }}</p>
+    	<hr>
+    	{% endfor %}
 
 		 <!-- WIP TAB DESIGN
 		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
