@@ -82,9 +82,14 @@
 
 
 <div class="container" style="width:400px;">
+
 <a href="{% url 'edit_profile' %}">update profile</a>
+
+
     <form method="post" id="framework_form">
         <div class="form-group">
+            <br><br/>
+            <img src="{{user.profile.image.url }}" width="240">
 
             <h2 class="account-heading">{{ user.username }}</h2>
             <p class="text-secondary">{{ user.email }}</p>
