@@ -1,37 +1,105 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
+
+{#This data needs to be changed as needed#}
 {% block content %}
+    <head>
+        <style>
+            body {
+                background-color: #d9e6d1;
+            }
 
-<input type="text" placeholder="Enter First symbol" id="stock-symbol1" name="symbol1"/>
-<input type="text" placeholder="Enter second symbol" id="stock-symbol2" name="symbol2"/>
+            h1 {
+                color: #ff000a;
+            }
 
-<div id="json-data"></div>
-<button id="compare-stocks">Compare</button>
-{% endblock content %}
+            p {
+                color: rgba(25, 25, 25, 0.99);
+                font-style: italic;
 
-{% block javascript %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+            }
+        </style>
+    </head>
+<title>Financial Report</title>
+    <div id="white" class="col-md-12 text-left">
+        <h2>Comparing Two Stocks</h2>
+        <p>Please Enter the symbol of the two stocks</p>
+    <div id = "test" class="inline">
+    <h3></h3>
+    </div>
+
+    <div id = "test2" class="inline">
+    <h3></h3>
+    </div>
+</div>
+    <body>
+<div id= main class="row">
+	<div class="pt-4 col-sm-6 pl-5">
+        <input type="text" placeholder="Enter Symbol1" id="stock-symbol1" name="symbol1"/>
+        <input type="text" placeholder="Enter Symbol2" id="stock-symbol2" name="symbol2"/>
+        <input onclick="getSymbol()" type="button" class="btn btn-primary" value = "View Details"/>
+    </div>
+</div>
+    </body>
+ {% endblock content %}
+
+{% block scripts %}
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
     <script>
-        $(document).ready(()=>{
-            $('compare-stocks').click(()=>{
+    {#var x = document.getElementById('stock-symbol').value;#}
 
-                const symbol1 = $('#stock-symbol1').val();
-                const symbol2 = $('#stock-symbol2').val();
+    {#urlA=`https://sandbox.iexapis.com/stable/stock/${x}/financials/?token=Tpk_087a52e2547e449e9cee8748f00491eb`;#}
+    function getSymbol(){
+        var x1 = document.getElementById('stock-symbol1').value;
+        var x2 = document.getElementById('stock-symbol2').value;
+        urlA=`https://sandbox.iexapis.com/stable/stock/${x1}/financials/?token=Tpk_087a52e2547e449e9cee8748f00491eb`;
+        urlB=`https://sandbox.iexapis.com/stable/stock/${x2}/financials/?token=Tpk_087a52e2547e449e9cee8748f00491eb`;
+    $.ajax({
 
-                $.ajax({
-                    method:'GET',
-                    data:{
-                        symbol1: symbol1,
-                        symbol2: symbol2
-                    },
-                    success: (data)=>{
-                        $('#json-data').val(JSON.stringify(data))
-                    },
-                    error: (err)=>{
-                        $('#json-data').val('Error Request')
-                    }
-                })
-            })
-        })
+        method: "GET",
+        url : urlA,
+        dataType: 'json',
+        success : onSucess1,
+        error: onError1
+    });
+
+    $.ajax({
+
+        method: "GET",
+        url : urlB,
+        dataType: 'json',
+        success : onSucess2,
+        error: onError2
+    });
+    }
+
+    function onSucess1(jsonReturn){
+
+            var temp = jsonReturn.financials[0];
+            console.log(temp);
+            var datee=temp.reportDate;
+            console.log(datee);
+            var profit=temp.grossProfit;
+            console.log(profit);
+            $("#test").html(profit);
+            {#var subtext ="submitted"+datee+"hours ago by"+profit+ "on <a>" +subreddit+"</a>";#}
+
+        }
+    function onError1() {
+        $("#test").html("i failed.");
+    }
+    function onSucess2(jsonReturn){
+
+            var temp = jsonReturn.financials[0];
+            console.log(temp);
+            var datee=temp.reportDate;
+            console.log(datee);
+            var profit=temp.grossProfit;
+            console.log(profit);
+            $("#test2").html(profit);
+        }
+    function onError2() {
+        $("#test2").html("i failed.");
+    }
     </script>
-
-{% endblock %}
+{% endblock scripts %}

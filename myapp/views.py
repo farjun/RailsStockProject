@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
 from myapp import stock_api
 from myapp.models import Stock
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.views.generic import View
+from django.template import Context, loader
+from django.shortcuts import render_to_response
+
+
 
 
 
@@ -20,14 +24,14 @@ def index(request):
 def single_stock(request, symbol):
 	
 	data = stock_api.get_stock_info(symbol)
-	all_companies = stock_api.get_currency()
-	#check for currency type and add it to data
-	for object in all_companies:
-		if object['symbol'] == symbol:
-			currency = object['currency']
-			break
-
-	data['currency'] = currency
+	# all_companies = stock_api.get_currency()
+	# #check for currency type and add it to data
+	# for object in all_companies:
+	# 	if object['symbol'] == symbol:
+	# 		currency = object['currency']
+	# 		break
+    #
+	# data['currency'] = currency
 
 	return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data})
 
@@ -70,7 +74,10 @@ def single_stock_historic(request, symbol):
 
 def single_stock_financial(request, symbol):
 	data = stock_api.get_financial_info(symbol)
-	return render(request,'financial.html',{'data': data})
+	return render(request,'financial2.html',{'data': data})
+
+def financial_using_ajax(request):
+	return render_to_response('financial2.html')
 
 
 class CompareView(View):

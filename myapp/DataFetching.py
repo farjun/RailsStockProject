@@ -45,4 +45,4 @@ def flatter(tu):
 
 
 stocksDatabase=connect()
-add_stock_to_db('gold',stocksDatabase)
+add_stock_to_db('T',stocksDatabase)

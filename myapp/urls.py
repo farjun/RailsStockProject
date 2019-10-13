@@ -11,7 +11,8 @@ urlpatterns = [
 	path('accounts/logout/', views.logout_view, name='logout'),
 	path('accounts/register/', views.register, name='register'),
 	path('compare/', views.CompareView.as_view(), name='register'),
-	path('compare/<str:symbol1>&<str:symbol2>', views.two_stocks, name='register'),
-	path('compare/<str:symbol1>&<str:symbol2>', views.two_stocks, name='register'),
+	# path('compare/<str:symbol1>&<str:symbol2>', views.two_stocks, name='register'),
+	# path('compare/<str:symbol1>&<str:symbol2>', views.two_stocks, name='register'),
+	path('financial/', views.financial_using_ajax, name='price'),
 
 ]

@@ -1,46 +1,80 @@
 {% extends "base.html" %}
+{% load static %}
 
 {#This data needs to be changed as needed#}
 {% block content %}
+    <head>
+        <style>
+            body {
+                background-color: #d9e6d1;
+            }
+
+            h1 {
+                color: #ff000a;
+            }
+
+            p {
+                color: red;
+            }
+        </style>
+    </head>
 <title>Financial Report</title>
-    <div class="col-md-12 text-left">
-        <h4>Enter the symbol of the company</h4>
-        <input type="text" placeholder="Enter symbol" id="stock-symbol1" name="symbol1"/>
-        <button id="compare-stocks" >Go</button>
+    <div id="white" class="col-md-12 text-left">
+        <h2>Financial Report</h2>
+    <div id = "test" class="col-md-12 text-middle">
 
+    </div>
 </div>
-<div class="row">
+    <body>
+<div id= main class="row">
 	<div class="pt-4 col-sm-6 pl-5">
-		<dl class="row text-left">
-			<dt class="col-sm-6">Open</dt>
-			<dd class="col-sm-6">{{ data.open }}</dd>
-
-			<dt class="col-sm-6">Volume</dt>
-			<dd class="col-sm-6">{{ data.volume }}
-			</dd>
-
-			<dt class="col-sm-6">52 Weeks Low</dt>
-			<dd class="col-sm-6">{{ data.week52Low }}</dd>
-
-			<dt class="col-sm-6">52 Weeks High</dt>
-			<dd class="col-sm-6">{{ data.week52High }}</dd>
-
-			<dt class="col-sm-6">Year Change</dt>
-			<dd class="col-sm-6">{{ data.ytdChange }}</dd>
-
-			<dt class="col-sm-6">Market Cap</dt>
-			<dd class="col-sm-6">{{ data.marketCap }}</dd>
-		</dl>
-	</div>
+        <input type="text" placeholder="Enter Symbol" id="stock-symbol" name="symbol1"/>
+        <input onclick="getSymbol()" type="button" class="btn btn-primary" value = "View Details"/>
+    </div>
+{#      <p>#}
+{#       <script type="text/javascript">#}
+{#           document.write("<h1>      </h1>"+"<h1>{{ subtext }}</h1>")#}
+{#       </script>#}
+{#          </p>#}
 </div>
+    </body>
  {% endblock content %}
-</html>
-
 
 {% block scripts %}
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js'></script>
     <script>
-    document.getElementById('compare-stocks').onclick = function() {
-        var symbol = document.getElementById('stock-symbol1').value;
+    {#var x = document.getElementById('stock-symbol').value;#}
+
+    {#urlA=`https://sandbox.iexapis.com/stable/stock/${x}/financials/?token=Tpk_087a52e2547e449e9cee8748f00491eb`;#}
+    function getSymbol(){
+        var x = document.getElementById('stock-symbol').value;
+        urlA=`https://sandbox.iexapis.com/stable/stock/${x}/financials/?token=Tpk_087a52e2547e449e9cee8748f00491eb`;
+    {#var symbol=$("#stock-symbol").val();#}
+    $.ajax({
+
+        method: "GET",
+        url : urlA,
+        dataType: 'json',
+        success : onSucess,
+        error: onError
+    });
+    }
+
+    function onSucess(jsonReturn){
+            alert("im here");
+            var temp = jsonReturn.financials[0];
+            console.log(temp);
+            var datee=temp.reportDate;
+            console.log(datee);
+            var profit=temp.grossProfit;
+            console.log(profit);
+            $("#test").html(profit);
+            {#var subtext ="submitted"+datee+"hours ago by"+profit+ "on <a>" +subreddit+"</a>";#}
+            $("#white").html(subtext);
+
+        }
+    function onError() {
+        $("#test").html("i failed.");
     }
     </script>
 {% endblock scripts %}
