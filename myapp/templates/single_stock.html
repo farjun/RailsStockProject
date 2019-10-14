@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% block content %}
 
 
@@ -56,17 +57,10 @@
 
 			<dt class="col-sm-6">Currency</dt>
 			<dd class="col-sm-6">{{ data.currency }}</dd>
+			<br><br><br>
+		
 		</dl>
-		<br>
-		<form action="{% url 'add_comment' %}" method="POST">
-			{% csrf_token %}
-			<input type="hidden" name="stock_id" value="{{ data.symbol }}" />
-			Title: <input type="text" name="title"/><br/>
-			Content: <br/>
-			<textarea cols="35" rows="8" name="content">
-			</textarea><br/>
-			<input type="submit" value="Post"/>
-			</form>
+		
 	</div>
 	
 
@@ -76,9 +70,10 @@
 		<br>
 		<h3>Change over time</h3>
 		<canvas id="changeOverTime"></canvas>
-		
+		<br>
+		<br>
 		<hr>
-		<h3>Comments:</h3>
+<!-- 		
     	{% for comment in comments %}
     	<p>
         date: {{comment.created_date }}&nbsp;
@@ -86,7 +81,7 @@
     	</p>
     	<p>{{ comment.text }}</p>
     	<hr>
-    	{% endfor %}
+    	{% endfor %} -->
 
 		 <!-- WIP TAB DESIGN
 		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -111,11 +106,61 @@
 		</ul> -->
 		
 	</div>
+
+		<!-- <form action="{% url 'add_comment' %}" method="POST">
+			{% csrf_token %}
+			<br>
+			<input type="hidden" name="stock_symbol" value="{{ data.symbol }}" />
+			Name: <input type="text" name="name"/><br/>
+			<br>
+			Content:
+			<textarea cols="20" rows="4" name="content">
+			</textarea><br/>
+			<input type="submit" value="Post"/>
+			</form> -->
 </div>
+		{% for comment in comments %}
+		<div class="container_comments" style="text-align: left">
+		
+		<p><span >{{ comment.author }}.</span></p>
+		<p>{{ comment.text }}</p>
+        
+    	
+	
+  		</div>
+  		{% endfor %}
+  
+  
+<button class="open-button" onclick="openForm()">Write a comment</button>
+
+<div class="form-popup" id="myForm">
+  <form action="{% url 'add_comment' %}" method="POST" class="form-container">
+	{% csrf_token %}
+	
+    <h1>Comment</h1>
+
+    <input type="hidden" name="stock_symbol" value="{{ data.symbol }}" />
+    <input type="text" placeholder="Your Name" name="name"/>
+    <input type="text" placeholder="Comment" name="content"/>
+
+    <button type="submit" class="btn">Post</button>
+    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
 
+<script>
+	function openForm() {
+	  document.getElementById("myForm").style.display = "block";
+	}
+	
+	function closeForm() {
+	  document.getElementById("myForm").style.display = "none";
+	}
+	</script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
