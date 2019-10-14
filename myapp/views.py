@@ -75,12 +75,12 @@ def add_stock_comment(request):
 	
 	if request.method == 'POST':
 		
-		if request.POST.get('title') and request.POST.get('content'):
+		if request.POST.get('name') and request.POST.get('content'):
 			comment= Comment()
-			comment.author = request.POST.get('title')
+			comment.author = request.POST.get('name')
 			comment.text= request.POST.get('content')
-			comment.stock_id = request.POST.get('stock_id')
-			symbol = request.POST.get('stock_id')
+			comment.stock_id = request.POST.get('stock_symbol')
+			symbol = request.POST.get('stock_symbol')
 			
 			comment.save()
 
