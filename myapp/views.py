@@ -12,13 +12,21 @@ from django import utils
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 
+from django.db.models import Q
 
 
 # View for the home page - a list of 20 of the most active stocks
 def index(request):
-	# Query the stock table, filter for top ranked stocks and order by their rank.
-	data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
-	return render(request, 'index.html', {'page_title': 'Main', 'data': data })
+
+	if request.GET.get('search'): # this will be GET now      
+		symbol = request.GET.get('search') # do some research what it does
+		
+		items = Stock.objects.filter(symbol__icontains=symbol)
+		return render(request,"index.html",{'page_title': 'Main', 'data': items })
+	else:
+		data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
+		return render(request, 'index.html', {'page_title': 'Main', 'data': data })
+	
 
 
 # View for the single stock page
@@ -87,5 +95,23 @@ def add_stock_comment(request):
 
 			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
+def get_stocks_gueryset(query=None):
+	queryset = []
+	queries = query.split(" ")
+	for q in queries:
+		stocks = Stock.objects.filter(
+			Q(symbol__icontains=q),
+			Q(name__icontains=q)
+		).distinct()
+
+		for stock in stocks:
+			queryset.append(stock)
+
+	return list(set(queryset))
+
+
+
+		
 
 
