@@ -7,6 +7,7 @@ from django.contrib.auth import logout
 from myapp.models import Comment
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
+from django import utils
 
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
@@ -85,7 +86,6 @@ def add_stock_comment(request):
 			comment.save()
 
 			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
 
 
 
