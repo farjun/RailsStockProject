@@ -19,9 +19,10 @@ from django.db.models import Q
 def index(request):
 
 	if request.GET.get('search'): # this will be GET now      
-		symbol = request.GET.get('search') # do some research what it does
+		search_text = request.GET.get('search') # do some research what it does
 		
-		items = Stock.objects.filter(symbol__icontains=symbol)
+		items = Stock.objects.filter(Q(symbol__icontains=search_text)
+		| Q(name__icontains=search_text))
 		return render(request,"index.html",{'page_title': 'Main', 'data': items })
 	else:
 		data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
