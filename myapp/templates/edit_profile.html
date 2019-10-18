@@ -1,62 +1,53 @@
 {% extends 'base.html' %}
 
 
-
 {% block content %}
 <h1>Update Your Profile</h1>
+
 <div class="container">
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-
-        <button type="submit">Submit</button>
-    </form>
-    <br>
-</div>
-{% endblock %}
-
-
-<form action="/contact/" method="post">
-    {% for p in Profile.user %}
-        <div class="fieldWrapper">
-            {{ p.image }}
-            {{ p.job }}: {{ p }}
+        <div class="form-row field-image">
+            <div class="edit_profile_pic">
+                <img class="edit_profile_pic" src="{{user.profile.image.url }}" width="240">
+                <input type="file" name="image" accept="image/*" id="id_image">
+            </div>
         </div>
-    {% endfor %}
-    <p><input type="submit" value="Send message" /></p>
-</form>
+        <label> here are the info from User model ->  myapp_auth table </label>
+        {{ form.as_p }}
+        <!--<input class="job_edit_profile" type="text">JOB : {{ user.profile.job }}</input>-->
+
+        <div class="fieldWrapper">
+
+            <form enctype="multipart/form-data" action="" method="post" id="profile_form" novalidate="">
+                <div>
+                    <fieldset class="module aligned ">
+
+                        <div class="form-row field-some_field">
+                            <div>
+                                <label>here are the info from Profile model -> myapp_profile table</label><br>
+                                <label for="id_some_field">Some field:</label>
+                                <input type="text" name="some_field" value="afa" class="vTextField" maxlength="255"
+                                       id="id_some_field">
+                            </div>
+                        </div>
+                        <div class="form-row field-job">
+                            <div>
+                                <label for="id_job">Job:</label>
+                                <input type="text" name="job" value="engineer" class="vTextField" maxlength="100"
+                                       id="id_job">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
 
 
-<!--<div class="container">-->
-    <!--<div class="jumbotron">-->
-        <!--<form method="post">-->
-            <!--{% csrf_token %}-->
-            <!--<div class="form-group input-group">-->
-                <!--<div class="input-group-prepend">-->
-                    <!--<span class="input-group-text"> <i class="fa fa-user"></i> </span>-->
-                <!--</div>-->
-                <!--<input name="firstname" required class="form-control" placeholder="First name" type="text">-->
-            <!--</div> &lt;!&ndash; form-group// &ndash;&gt;-->
-            <!--<div class="form-group input-group">-->
-                <!--<div class="input-group-prepend">-->
-                    <!--<span class="input-group-text"> <i class="fa fa-user"></i> </span>-->
-                <!--</div>-->
-                <!--<input name="lastname" required class="form-control" placeholder="Last name" type="text">-->
-            <!--</div> &lt;!&ndash; form-group// &ndash;&gt;-->
-            <!--<div class="form-group input-group">-->
-                <!--<div class="input-group-prepend">-->
-                    <!--<span class="input-group-text"> <i class="fa fa-envelope"></i> </span>-->
-                <!--</div>-->
-                <!--<input name="email" required class="form-control" placeholder="Email address" type="email">-->
-            <!--</div> &lt;!&ndash; form-group// &ndash;&gt;-->
-            <!--<div class="form-group input-group">-->
-                <!--<div class="input-group-prepend">-->
-                    <!--<span class="input-group-text"> <i class="fa fa-envelope"></i> </span>-->
-                <!--</div>-->
-                <!--<input name="username" required class="form-control" placeholder="Username" type="text">-->
-            <!--</div> &lt;!&ndash; form-group// &ndash;&gt;-->
+                <button type="submit">Submit</button>
+            </form>
+            <br>
+        </div>
 
-        <!--</form>-->
-    <!--</div>-->
-<!--</div>-->
+    </form>
+</div>
+        {% endblock %}
 
