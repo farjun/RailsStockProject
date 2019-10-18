@@ -22,21 +22,22 @@
     </div>
 
 
-    <table class="table table-hover data-table">
+    <table class="table data-table">
         <tr>
             <th>#</th>
             <th>Symbol</th>
             <th>Name</th>
             <th>Price</th>
             <th>Change</th>
+            <th>Follow</th>
         </tr>
         {% for stock in data %}
-            <tr class="clickable-row" data-href="/stock/{{ stock.symbol }}">
+            <tr >
 
-                <td>{{ forloop.counter }}</td>
-                <td>{{ stock.symbol }}</td>
-                <td>{{ stock.name }}</td>
-                <td>{{ stock.price|floatformat:2 }}</td>
+                <td class="clickable-row" data-href="/stock/{{ stock.symbol }}">{{ forloop.counter }}</td>
+                <td class="clickable-row" data-href="/stock/{{ stock.symbol }}">{{ stock.symbol }}</td>
+                <td class="clickable-row" data-href="/stock/{{ stock.symbol }}">{{ stock.name }}</td>
+                <td class="clickable-row" data-href="/stock/{{ stock.symbol }}">{{ stock.price|floatformat:2 }}</td>
                 <td class="
                 {% if stock.change_percent >= 0 %}
                     text-success
@@ -44,8 +45,12 @@
                     text-danger
                 {% endif %}
                 ">{{ stock.change_percent|floatformat:2 }}%</td>
-
+                <td><button class="btn success">+</button></td>
             </tr>
+            
+            
+            
+
         {% endfor %}
     </table>
 {% endblock %}
