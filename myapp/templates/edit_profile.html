@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<h1>Update Your Profile</h1>
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Submit</button>
+    </form>
+    <br>
+</div>
+{% endblock %}
+
+
+<form action="/contact/" method="post">
+    {% for p in Profile.user %}
+        <div class="fieldWrapper">
+            {{ p.image }}
+            {{ p.job }}: {{ p }}
+        </div>
+    {% endfor %}
+    <p><input type="submit" value="Send message" /></p>
+</form>
+
+
+<!--<div class="container">-->
+    <!--<div class="jumbotron">-->
+        <!--<form method="post">-->
+            <!--{% csrf_token %}-->
+            <!--<div class="form-group input-group">-->
+                <!--<div class="input-group-prepend">-->
+                    <!--<span class="input-group-text"> <i class="fa fa-user"></i> </span>-->
+                <!--</div>-->
+                <!--<input name="firstname" required class="form-control" placeholder="First name" type="text">-->
+            <!--</div> &lt;!&ndash; form-group// &ndash;&gt;-->
+            <!--<div class="form-group input-group">-->
+                <!--<div class="input-group-prepend">-->
+                    <!--<span class="input-group-text"> <i class="fa fa-user"></i> </span>-->
+                <!--</div>-->
+                <!--<input name="lastname" required class="form-control" placeholder="Last name" type="text">-->
+            <!--</div> &lt;!&ndash; form-group// &ndash;&gt;-->
+            <!--<div class="form-group input-group">-->
+                <!--<div class="input-group-prepend">-->
+                    <!--<span class="input-group-text"> <i class="fa fa-envelope"></i> </span>-->
+                <!--</div>-->
+                <!--<input name="email" required class="form-control" placeholder="Email address" type="email">-->
+            <!--</div> &lt;!&ndash; form-group// &ndash;&gt;-->
+            <!--<div class="form-group input-group">-->
+                <!--<div class="input-group-prepend">-->
+                    <!--<span class="input-group-text"> <i class="fa fa-envelope"></i> </span>-->
+                <!--</div>-->
+                <!--<input name="username" required class="form-control" placeholder="Username" type="text">-->
+            <!--</div> &lt;!&ndash; form-group// &ndash;&gt;-->
+
+        <!--</form>-->
+    <!--</div>-->
+<!--</div>-->
+
