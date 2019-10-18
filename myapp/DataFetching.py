@@ -6,27 +6,31 @@ import sys
 def connect():
     database = sqlite3.connect('testDatabase.db',isolation_level=None,timeout=10)
     return database
+stocksDatabase=connect()
 
 def fetch_stock(symbol):
     url = "https://sandbox.iexapis.com/stable/stock/"+str(symbol)+"/quote?token=Tpk_087a52e2547e449e9cee8748f00491eb"
     response=requests.get(url)
     if (response.status_code)==404:
-        return 0
+        return None
     else:
         dataset = response.json()
     return (dataset)
 
-def is_cached(ssymbol,database):
-    c1 = database.cursor()
+def is_cached(ssymbol):
+    c1 = stocksDatabase.cursor()
+
     res = list(c1.execute('''select symbol from stocks '''))
+
     res=flatter(res)
+    print(res)
     if ssymbol in res:
         return True
     else:
         return False
 
-def add_stock_to_db(symbol,database):
-    if is_cached(symbol.upper(),database) is True:
+def add_stock_to_db(symbol):
+    if is_cached(symbol.upper()) is True:
 
         sys.exit()
     else:
@@ -34,7 +38,7 @@ def add_stock_to_db(symbol,database):
         if stock_data==0:
             exit(0)
         else :
-            c1 = database.cursor()
+            c1 = stocksDatabase.cursor()
             c1.execute("INSERT INTO stocks VALUES (?,?)", [stock_data["symbol"], stock_data["companyName"]])
 
 def flatter(tu):
@@ -44,5 +48,4 @@ def flatter(tu):
     return l
 
 
-stocksDatabase=connect()
-add_stock_to_db('T',stocksDatabase)
+add_stock_to_db('AMD')
