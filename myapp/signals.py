@@ -1,8 +1,12 @@
 #__author__ = Mohammad Abdin
+
+from .models import Profile
+
+from django.dispatch import receiver
+# from django.core.signals import post_save
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
-from django.dispatch import receiver
-from .models import Profile
+
 
 # here we want a user profile to be created automatically after an account is being created
 @receiver(post_save, sender = User)

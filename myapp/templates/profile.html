@@ -86,16 +86,18 @@
 <a href="{% url 'edit_profile' %}">update profile</a>
 
 
-    <form method="post" id="framework_form">
+    <form method="post" id="framework_form" enctype="multipart/form-data">
         <div class="form-group">
             <br><br/>
             <img src="{{user.profile.image.url }}" width="240">
 
+
+
+
             <h2 class="account-heading">{{ user.username }}</h2>
             <p class="text-secondary">{{ user.email }}</p>
 
-            <!-- not working !! -->
-            <p class="text-secondary">{{ user.job }}</p>
+           <p class="account-heading">JOB : {{ user.profile.job }}</p>
 
             <label>Select your favorite stocks</label>
             <select id="fav_stocks" name="fav_stocks[]" multiple class="form-control">
@@ -134,7 +136,6 @@ $(document).ready(function(){
   enableCaseInsensitiveFiltering: true,
   buttonWidth:'400px'
  });
-
  $('#framework_form').on('submit', function(event){
   event.preventDefault();
   var form_data = $(this).serialize();
@@ -152,10 +153,7 @@ $(document).ready(function(){
    }
   });
  });
-
-
 });
-
 </script>
 
     </div>

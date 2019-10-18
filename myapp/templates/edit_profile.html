@@ -16,6 +16,16 @@
 {% endblock %}
 
 
+<form action="/contact/" method="post">
+    {% for p in Profile.user %}
+        <div class="fieldWrapper">
+            {{ p.image }}
+            {{ p.job }}: {{ p }}
+        </div>
+    {% endfor %}
+    <p><input type="submit" value="Send message" /></p>
+</form>
+
 
 <!--<div class="container">-->
     <!--<div class="jumbotron">-->

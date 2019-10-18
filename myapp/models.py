@@ -21,13 +21,15 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg',upload_to='profile_pics')
+
+    some_field = models.CharField(max_length=255, null=True, blank=True, default=None)
     # not working !!
-    #job = models.CharField(max_length=100)
+    job = models.CharField(max_length=100, null=True, blank=True, default=None)
 
     dbconn = sqlite3.connect('db.sqlite3')
     cur = dbconn.cursor()
 
-    cur.execute("SELECT name,symbol FROM myapp_stock")
+   # cur.execute("SELECT name,symbol FROM myapp_stock")
 
     rows = cur.fetchall()
 

@@ -51,15 +51,18 @@ def register(request):
         lastname = request.POST.get('lastname')
         email = request.POST.get('email')
 
-        job = request.POST.get('job')
+        # job = request.POST.get('job')
 
         password = request.POST.get('password')
 
         newuser = User.objects.create_user(username=username, email=email, password=password)
         newuser.first_name = firstname
         newuser.last_name = lastname
+
+        # profile_user = User.objects.first()
+        # profile_user.profile.job = job
         # not working !!
-        newuser.job = job
+        #newuser.job = job
 
         newuser.save()
         return redirect('index')
