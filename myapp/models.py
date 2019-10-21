@@ -14,6 +14,9 @@ class Stock(models.Model):
 
 #comment model
 class Comment(models.Model):
+	"""
+	This is the comment model. It includes : stock, author, text and created_date.
+	"""
 	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='comments')
 	author = models.CharField(max_length=200)
 	text = models.TextField()

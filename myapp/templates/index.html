@@ -3,17 +3,6 @@
 {% block content %}
 
 
-    <!--
-    <div class="row">
-        <div class="col-11 text-left">Top Stocks</div>
-        <div class="col-1 text-right">X</div>
-    </div>
-    -->
-    <!-- <form id="searchform" action="search/" method="get">
-        <input type="text" name="q" type="text"/>
-        <button type="button" onclick="searchform.submit()">Search</button>
-    </form> -->
-
     <div>
     <form action="" method="get">
         <input type="text" class="form-control" name="search" id="id_q" placeholder="Search by symbol or name...">
@@ -22,29 +11,45 @@
     </div>
 
 
-    <table class="table data-table">
-        <tr>
+    <table class="table table-hover data-table">
+        <tr style="background-color: rgb(217, 222, 236); font-size:120%; font-style: oblique">
             <th>#</th>
             <th>Symbol</th>
             <th>Name</th>
             <th>Price</th>
+            <th></th>
             <th>Change</th>
             <th>Follow</th>
         </tr>
+        
         {% for stock in data %}
             <tr >
 
-                <td class="clickable-row" data-href="/stock/{{ stock.symbol }}">{{ forloop.counter }}</td>
-                <td class="clickable-row" data-href="/stock/{{ stock.symbol }}">{{ stock.symbol }}</td>
+                <td class="clickable-row" data-href="/stock/{{ stock.symbol }}" style="font-weight: bolder">{{ forloop.counter }}.</td>
+                <td class="clickable-row" data-href="/stock/{{ stock.symbol }}" style="color: rgb(46, 46, 65); font-style: italic; font-weight: bold">{{ stock.symbol }}</td>
                 <td class="clickable-row" data-href="/stock/{{ stock.symbol }}">{{ stock.name }}</td>
                 <td class="clickable-row" data-href="/stock/{{ stock.symbol }}">{{ stock.price|floatformat:2 }}</td>
-                <td class="
+                <td class="clickable-row" data-href="/stock/{{ stock.symbol }}">
+                    {% if stock.change_percent >= 0 %}
+                        <i style="color: green; font-size:200%" class="fa fa-long-arrow-up"></i>
+                    {% else %}
+                       <i  style="color: rgb(202, 26, 26); font-size:200%" class="fa fa-long-arrow-down"></i>
+                    {% endif %}
+                
+                </td>
+                <!-- <td class="
                 {% if stock.change_percent >= 0 %}
                     text-success
                 {% else %}
                     text-danger
                 {% endif %}
-                ">{{ stock.change_percent|floatformat:2 }}%</td>
+                ">{{ stock.change_percent|floatformat:2 }}%</td> -->
+                {% if stock.change_percent >= 0 %}
+                    <td style="color: green">{{ stock.change_percent|floatformat:2 }}% </td>
+                {% else %}
+                    <td style="color: red">{{ stock.change_percent|floatformat:2 }}%</td>
+                {% endif %}
+
                 <td><button class="btn success">+</button></td>
             </tr>
             
