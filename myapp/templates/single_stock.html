@@ -18,10 +18,8 @@
 	<big>
 			{{ data.latestPrice }}
 			<small class="lead">
-                        data_from_django = {{ data }};
-                        alert(data_from_django);
-
-
+            <script>
+            </script>
 					{% if data.changePercent >= 0 %}
                         <span class="text-success">+{{ data.change }} (+{{ data.changePercent }}%)</span>
                     {% else %}

@@ -18,7 +18,6 @@ def fetch_stock(symbol):
         return None
     else:
         dataset = response.json()
-        print(dataset)
     return (dataset)
 
 
