@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 
+
 {% block content %}
 <h1>Update Your Profile</h1>
 
@@ -13,41 +14,44 @@
                 <input type="file" name="image" accept="image/*" id="id_image">
             </div>
         </div>
-        <label> here are the info from User model ->  myapp_auth table </label>
+        <label> here are the info from User model -> myapp_auth table </label>
+
+
         {{ form.as_p }}
-        <!--<input class="job_edit_profile" type="text">JOB : {{ user.profile.job }}</input>-->
-
-        <div class="fieldWrapper">
-
-            <form enctype="multipart/form-data" action="" method="post" id="profile_form" novalidate="">
-                <div>
-                    <fieldset class="module aligned ">
-
-                        <div class="form-row field-some_field">
-                            <div>
-                                <label>here are the info from Profile model -> myapp_profile table</label><br>
-                                <label for="id_some_field">Some field:</label>
-                                <input type="text" name="some_field" value="afa" class="vTextField" maxlength="255"
-                                       id="id_some_field">
-                            </div>
-                        </div>
-                        <div class="form-row field-job">
-                            <div>
-                                <label for="id_job">Job:</label>
-                                <input type="text" name="job" value="engineer" class="vTextField" maxlength="100"
-                                       id="id_job">
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
+        <button type="submit">Submit</button>
 
 
-                <button type="submit">Submit</button>
-            </form>
-            <br>
-        </div>
+        <!--<div class="fieldWrapper">-->
+
+        <!--<form enctype="multipart/form-data" action="" method="post" id="profile_form" novalidate="">-->
+        <!--<div>-->
+        <!--<fieldset class="module aligned ">-->
+
+        <!--<div class="form-row field-some_field">-->
+        <!--<div>-->
+        <!--<label>here are the info from Profile model -> myapp_profile table</label><br>-->
+        <!--<label for="id_some_field">Some field:</label>-->
+        <!--<input type="text" name="some_field" value="afa" class="vTextField" maxlength="255"-->
+        <!--id="id_some_field">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-row field-job">-->
+        <!--<div>-->
+        <!--<label for="id_job">Job:</label>-->
+        <!--<input type="text" name="job" value="engineer" class="vTextField" maxlength="100"-->
+        <!--id="id_job">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</fieldset>-->
+        <!--</div>-->
+
+
+        <!--<button type="submit">Submit</button>-->
+        <!--</form>-->
+        <!--<br>-->
+        <!--</div>-->
 
     </form>
 </div>
-        {% endblock %}
+{% endblock %}
 
