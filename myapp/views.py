@@ -7,17 +7,14 @@ from myapp import stock_api
 from myapp.forms import  UpdateProfile
 from myapp.models import Stock
 
-
-""" View for the home page - a list of 20 of the most active stocks """
 def index(request):
+    """ View for the home page - a list of 20 of the most active stocks """
     # Query the stock table, filter for top ranked stocks and order by their rank.
     data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
     return render(request, 'index.html', {'page_title': 'Main', 'data': data })
 
-
-""" View for the single stock page symbol is the requested stock's symbol ('AAPL' for Apple) """
 def single_stock(request, symbol):
-
+    """ View for the single stock page symbol is the requested stock's symbol ('AAPL' for Apple) """
     data = stock_api.get_stock_info(symbol)
     all_companies = stock_api.get_currency()
     #check for currency type and add it to data
@@ -31,10 +28,11 @@ def single_stock(request, symbol):
 
 @login_required
 def profile(request):
+    """ the user's profile view """
     return render(request, 'profile.html')
 
-""" the registration view of the project for creating users using UI """
 def register(request):
+    """ the registration view of the project for creating users using UI """
     # If post -> register the user and redirect to main page
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -53,9 +51,9 @@ def register(request):
         # If not post (regular request) -> render register page
         return render(request, 'register.html', {'page_title': 'Register'})
 
-""" for editing the user's profile(in db) and updating his info depending on the entered values"""
 @login_required
 def edit_profile(request):
+    """ for editing the user's profile(in db) and updating his info depending on the entered values"""
     args = {}
     if request.method == 'POST':
         form = UpdateProfile(request.POST, instance=request.user)
@@ -69,19 +67,16 @@ def edit_profile(request):
         args = {'form': form}
         return render(request, 'edit_profile.html', args)
 
-""" log the user out from his account and return him the home page"""
 def logout_view(request):
+    """ log the user out from his account and return him the home page"""
     logout(request)
     return redirect('index')
 
-
-""" API for a stock's price over time
-
- symbol is the requested stock's symbol ('AAPL' for Apple)
-
- The response is JSON data of an array composed of "snapshot" objects (date + stock info + ...), usually one per day
-
-"""
 def single_stock_historic(request, symbol):
+    """
+    API for a stock's price over time
+    symbol is the requested stock's symbol ('AAPL' for Apple)
+    The response is JSON data of an array composed of "snapshot" objects (date + stock info + ...), usually one per day
+    """
     data = stock_api.get_stock_historic_prices(symbol, time_range='1m')
     return JsonResponse({'data': data})

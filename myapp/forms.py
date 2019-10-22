@@ -3,10 +3,8 @@ from django import forms
 from .models import Profile
 from django.contrib.auth.models import User
 
-
-
-""" this is the form for updating the user's profile."""
 class UpdateProfile(forms.ModelForm):
+    """ this is the form for updating the user's profile"""
     username = forms.CharField(required=True)
     email = forms.EmailField(required=True)
     first_name = forms.CharField(required=True)
@@ -18,6 +16,7 @@ class UpdateProfile(forms.ModelForm):
         fields = ('username', 'email', 'first_name', 'last_name', 'job' )
 
     def clean_email(self):
+        """ this function checks if the entered email address is already in use"""
         username = self.cleaned_data.get('username')
         email = self.cleaned_data.get('email')
 
@@ -26,10 +25,10 @@ class UpdateProfile(forms.ModelForm):
         return email
 
     def save(self, commit=True):
+        """ this function saves the edits applied to the to user's profile"""
         user = super(UpdateProfile, self).save(commit=False)
         user.email = self.cleaned_data['email']
         print("save profile .....")
         if commit:
             user.save()
-
         return user

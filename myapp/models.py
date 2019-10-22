@@ -1,14 +1,13 @@
+import sqlite3
 from django.contrib.auth.models import User
 from django.db import models
-from django import forms
-from multiselectfield import MultiSelectField
-import sqlite3
 
+STOCKS_CHOICES = ()
+DATABASE_NAME = 'db.sqlite3'
+STOCKS_DATABASE ='myapp_stock'
 
-
-
-""" the Stock's model is used to create stocks for the project use """
 class Stock(models.Model):
+    """ the Stock's model is used to create stocks for the project use """
     symbol = models.CharField(max_length=12, primary_key=True)
     name = models.CharField(max_length=64)
     top_rank = models.IntegerField(null=True)
@@ -18,18 +17,16 @@ class Stock(models.Model):
     market_cap = models.FloatField(null=True)
     primary_exchange = models.CharField(null=True, max_length=32)
 
-""" the user's profile model - created automatically by sending a signal when the user is created"""
 class Profile(models.Model):
+    """ the user's profile model - created automatically by sending a signal when the user is created"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg',upload_to='profile_pics')
-    # not working !!
-    job = models.CharField(max_length=10, null=True, blank=True, default=None)
-    # TODO : add more info fields
-    STOCKS_CHOICES = ()
-    dbconn = sqlite3.connect('db.sqlite3')
+    # TODO : add more info fields, like job
+
+    dbconn = sqlite3.connect(DATABASE_NAME)
     cur = dbconn.cursor()
 
-    cur.execute("SELECT name,symbol FROM myapp_stock")
+    cur.execute("SELECT name,symbol FROM {}".format(STOCKS_DATABASE))
     rows = cur.fetchall()
     stocks_choice = []
     for row in rows:
