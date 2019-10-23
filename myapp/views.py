@@ -26,7 +26,7 @@ def index(request):
 	:template:'myapp/templates/index.html'
 
 	"""
-	newNotification = notifications.Notifications()
+	newNotification = notifications.Notifications('WFC')
 	newNotification.check_stock_price()
 	
 	if request.GET.get('search'): # this will be GET now      
@@ -50,7 +50,7 @@ def single_stock(request, symbol):
 
 	:template:'myapp/templates/signle_stock.html'
 	"""
-	
+
 	with open('myapp/static/currencies.json', 'r') as f:
 		currency_json_obj = json.load(f)
 
