@@ -26,9 +26,9 @@ def index(request):
 	:template:'myapp/templates/index.html'
 
 	"""
-	newNotification = notifications.tt
-	newNotification.p()
-	newNotification.t()
+	newNotification = notifications.Notifications()
+	newNotification.check_stock_price()
+	
 	if request.GET.get('search'): # this will be GET now      
 		search_text = request.GET.get('search') # do some research what it does
 		
@@ -50,6 +50,7 @@ def single_stock(request, symbol):
 
 	:template:'myapp/templates/signle_stock.html'
 	"""
+	
 	with open('myapp/static/currencies.json', 'r') as f:
 		currency_json_obj = json.load(f)
 
