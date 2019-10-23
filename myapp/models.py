@@ -24,3 +24,11 @@ class Comment(models.Model):
 
 	def __str__(self):
 		return self.text
+	
+class Notification(models.Model):
+	notification_id = models.AutoField(primary_key=True)
+	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='stock_symbol')
+	message = models.TextField()
+	read = models.BooleanField(default=False)
+	created_date = models.DateTimeField(auto_now_add=True, blank=True)
+
