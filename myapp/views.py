@@ -11,6 +11,9 @@ from django import utils
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
 from django.db.models import Q
+from myapp import notifications
+import json
+
 
 
 # View for the home page - a list of 20 of the most active stocks
@@ -23,6 +26,9 @@ def index(request):
 	:template:'myapp/templates/index.html'
 
 	"""
+	newNotification = notifications.tt
+	newNotification.p()
+	newNotification.t()
 	if request.GET.get('search'): # this will be GET now      
 		search_text = request.GET.get('search') # do some research what it does
 		
@@ -44,16 +50,14 @@ def single_stock(request, symbol):
 
 	:template:'myapp/templates/signle_stock.html'
 	"""
+	with open('myapp/static/currencies.json', 'r') as f:
+		currency_json_obj = json.load(f)
 
 	data = stock_api.get_stock_info(symbol)
-	all_companies = stock_api.get_currency()
 	comments = Comment.objects.filter(stock_id = symbol)
-	#check for currency type and add it to data
-	for object in all_companies:
-		if object['symbol'] == symbol:
-			currency = object['currency']
-			break
-
+	#Getting stock's currency 
+	currency = currency_json_obj[symbol]
+	#adding currency key to data
 	data['currency'] = currency
 	
 
