@@ -3,13 +3,27 @@ from django import forms
 from .models import Profile
 from django.contrib.auth.models import User
 
+
+class EditProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username','email', 'first_name','last_name' )
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('job', 'image', 'my_stocks')  # Note that we didn't mention user field here.
+
+
 class UpdateProfile(forms.ModelForm):
     """ this is the form for updating the user's profile"""
     username = forms.CharField(required=True)
     email = forms.EmailField(required=True)
     first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
-    job = forms.CharField(required=True)
+    last_name = forms.CharField(required=False)
+    job = forms.CharField(required=False)
+    # my_stocks = forms.CharField(required=False)
 
     class Meta:
         model = Profile

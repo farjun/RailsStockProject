@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from myapp import stock_api
-from myapp.forms import  UpdateProfile
-from myapp.models import Stock
+from myapp.forms import  UpdateProfile, EditProfileForm, ProfileForm
+from myapp.models import Stock,Profile
 
 def index(request):
     """ View for the home page - a list of 20 of the most active stocks """
@@ -53,19 +53,45 @@ def register(request):
 
 @login_required
 def edit_profile(request):
-    """ for editing the user's profile(in db) and updating his info depending on the entered values"""
-    args = {}
     if request.method == 'POST':
-        form = UpdateProfile(request.POST, instance=request.user)
-        form.actual_user = request.user
-        if form.is_valid():
-            form.save()
+        form = EditProfileForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)  # request.FILES is show the selected image or file
+
+        if form.is_valid() and profile_form.is_valid():
+            user_form = form.save()
+            custom_form = profile_form.save(False)
+            custom_form.user = user_form
+            custom_form.save()
             return redirect('profile')
     else:
-        # the instance=request.user : gets the user saved info
-        form = UpdateProfile(instance=request.user)
-        args = {'form': form}
+        form = EditProfileForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+        args = {}
+        # args.update(csrf(request))
+        args['form'] = form
+        args['profile_form'] = profile_form
         return render(request, 'edit_profile.html', args)
+
+#
+# @login_required
+# def edit_profile(request):
+#     """ for editing the user's profile(in db) and updating his info depending on the entered values"""
+#     args = {}
+#     if request.method == 'POST':
+#         #this way : instance edits the profile's db
+#         form = UpdateProfile(request.POST, instance=request.user)
+#         form.actual_user = request.user
+#
+#         # profile = Profile(id = form.actual_user.id,image = form.actual_user.profile.image.url , my_stocks=form.actual_user.profile.my_stocks,user_id=form.actual_user.id,job=form.actual_user.profile.job)
+#         # profile.save()
+#         if form.is_valid():
+#             form.save()
+#             return redirect('profile')
+#     else:
+#         # the instance=request.user : gets the user saved info
+#         form = UpdateProfile(instance=request.user)
+#         args = {'form': form}
+#         return render(request, 'edit_profile.html', args)
 
 def logout_view(request):
     """ log the user out from his account and return him the home page"""

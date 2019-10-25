@@ -1,11 +1,12 @@
-import sqlite3
 from django.contrib.auth.models import User
 from django.db import models
+from django import forms
+from multiselectfield import MultiSelectField
+import sqlite3
 
 STOCKS_CHOICES = ()
 DATABASE_NAME = 'db.sqlite3'
 STOCKS_DATABASE ='myapp_stock'
-
 class Stock(models.Model):
     """ the Stock's model is used to create stocks for the project use """
     symbol = models.CharField(max_length=12, primary_key=True)
@@ -17,11 +18,14 @@ class Stock(models.Model):
     market_cap = models.FloatField(null=True)
     primary_exchange = models.CharField(null=True, max_length=32)
 
+
 class Profile(models.Model):
     """ the user's profile model - created automatically by sending a signal when the user is created"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg',upload_to='profile_pics')
-    # TODO : add more info fields, like job
+
+    job = models.CharField(max_length=20, null=True, default=None)
+    # TODO : add more info fields
 
     dbconn = sqlite3.connect(DATABASE_NAME)
     cur = dbconn.cursor()

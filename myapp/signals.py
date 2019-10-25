@@ -13,12 +13,14 @@ def create_profile(sender, instance , created , **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-"""
-receives the signal that askes for saving the profile
-:param sender: User Model
-:type sender: Model
-"""
+
 @receiver(post_save, sender = User)
 def save_profile(sender, instance , **kwargs):
+    """
+    receives the signal that askes for saving the profile
+    :param sender: User Model
+    :type sender: Model
+    """
     instance.profile.save()
+
 

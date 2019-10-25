@@ -1,57 +1,34 @@
 {% extends 'base.html' %}
 
 
-
 {% block content %}
 <h1>Update Your Profile</h1>
 
 <div class="container">
-    <form method="post">
+
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="form-row field-image">
-            <div class="edit_profile_pic">
-                <img class="edit_profile_pic" src="{{user.profile.image.url }}" width="240">
-                <input type="file" name="image" accept="image/*" id="id_image">
-            </div>
-        </div>
-        <label> here are the info from User model -> myapp_auth table </label>
-
-
-        {{ form.as_p }}
+        <table>
+            {{ form.as_table }}
+            {{ profile_form.as_table }}
+        </table>
         <button type="submit">Submit</button>
-
-
-        <!--<div class="fieldWrapper">-->
-
-        <!--<form enctype="multipart/form-data" action="" method="post" id="profile_form" novalidate="">-->
-        <!--<div>-->
-        <!--<fieldset class="module aligned ">-->
-
-        <!--<div class="form-row field-some_field">-->
-        <!--<div>-->
-        <!--<label>here are the info from Profile model -> myapp_profile table</label><br>-->
-        <!--<label for="id_some_field">Some field:</label>-->
-        <!--<input type="text" name="some_field" value="afa" class="vTextField" maxlength="255"-->
-        <!--id="id_some_field">-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="form-row field-job">-->
-        <!--<div>-->
-        <!--<label for="id_job">Job:</label>-->
-        <!--<input type="text" name="job" value="engineer" class="vTextField" maxlength="100"-->
-        <!--id="id_job">-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</fieldset>-->
-        <!--</div>-->
-
-
-        <!--<button type="submit">Submit</button>-->
-        <!--</form>-->
-        <!--<br>-->
-        <!--</div>-->
-
     </form>
+
+    <!--<form method="post">-->
+    <!--{% csrf_token %}-->
+    <!--&lt;!&ndash;<div class="form-row field-image">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="edit_profile_pic">&ndash;&gt;-->
+    <!--&lt;!&ndash;<img class="edit_profile_pic" src="{{user.profile.image.url }}" width="240">&ndash;&gt;-->
+    <!--&lt;!&ndash;<input type="file" name="image" accept="image/*" id="id_image">&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<label> here are the info from User model -> myapp_auth table </label>&ndash;&gt;-->
+
+    <!--{{ form.as_p }}-->
+    <!--<button type="submit">Submit</button>-->
+
+    <!--</form>-->
 </div>
 {% endblock %}
 

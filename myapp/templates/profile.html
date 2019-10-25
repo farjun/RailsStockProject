@@ -102,6 +102,7 @@
             <label>Select your favorite stocks</label>
             <select id="fav_stocks" name="fav_stocks[]" multiple class="form-control">
 
+
                 {% for choice in user.profile.STOCKS_CHOICES %}
                 <option>
                     {{ choice }}
