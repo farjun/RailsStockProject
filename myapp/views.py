@@ -13,8 +13,9 @@ from django.utils.decorators import method_decorator
 from django.db.models import Q
 from myapp import notifications
 import json
-
-
+from celery.decorators import task
+from celery.task.schedules import crontab
+from celery.decorators import periodic_task
 
 # View for the home page - a list of 20 of the most active stocks
 def index(request):
@@ -26,9 +27,6 @@ def index(request):
 	:template:'myapp/templates/index.html'
 
 	"""
-	newNotification = notifications.Notifications('WFC')
-	newNotification.check_stock_price()
-	
 	if request.GET.get('search'): # this will be GET now      
 		search_text = request.GET.get('search') # do some research what it does
 		
@@ -39,8 +37,6 @@ def index(request):
 		data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
 		return render(request, 'index.html', {'page_title': 'Main', 'data': data })
 	
-
-
 # View for the single stock page
 # symbol is the requested stock's symbol ('AAPL' for Apple)
 def single_stock(request, symbol):
@@ -61,7 +57,6 @@ def single_stock(request, symbol):
 	#adding currency key to data
 	data['currency'] = currency
 	
-
 	return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data, 'comments':comments})
 
 
