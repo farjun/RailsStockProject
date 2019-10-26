@@ -26,6 +26,7 @@ class Comment(models.Model):
 		return self.text
 	
 class Notification(models.Model):
+	"""Notification model"""
 	notification_id = models.AutoField(primary_key=True)
 	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='stock_symbol')
 	message = models.TextField()
