@@ -18,23 +18,23 @@ class Notifications:
 
     def check_stock_price(self):
         #testing notification system 
-        while True:
+    
 
-            data = stock_api.get_stock_info(self.symbol)
-            latest_price = int(data['latestPrice'])
-            previous_close = int(data['previousClose'])
+        data = stock_api.get_stock_info(self.symbol)
+        latest_price = int(data['latestPrice'])
+        previous_close = int(data['previousClose'])
 
-            difference = round(abs(((previous_close - latest_price)  / previous_close) * 100), 2)
+        difference = round(abs(((previous_close - latest_price)  / previous_close) * 100), 2)
+        
+        if previous_close > latest_price:
+            message = self.symbol + " Stock's price decreased by " + str(difference) + " %"
+            self.save_notification(self.symbol, message)
+
+        elif previous_close < latest_price:
+            message = self.symbol + " Stock's price increased by " + str(difference) + " %"
+            self.save_notification(self.symbol, message)
             
-            if previous_close > latest_price:
-                message = self.symbol + " Stock's price decreased by " + str(difference) + " %"
-                self.save_notification(self.symbol, message)
-
-            elif previous_close < latest_price:
-                message = self.symbol + " Stock's price increased by " + str(difference) + " %"
-                self.save_notification(self.symbol, message)
             
-            time.sleep(2)
             
             
         
