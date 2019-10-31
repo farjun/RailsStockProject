@@ -1,6 +1,7 @@
 import requests
 import sqlite3
 
+#Add unitest
 
 def connect():
     database = sqlite3.connect('testDatabase.db', isolation_level=None, timeout=10)
@@ -9,10 +10,9 @@ def connect():
 
 stocksDatabase = connect()
 
-
 def fetch_stock(symbol):
     url = "https://sandbox.iexapis.com/stable/stock/" + str(
-        symbol) + "/quote?token=Tpk_087a52e2547e449e9cee8748f00491eb"
+symbol) + "/quote?token=Tpk_087a52e2547e449e9cee8748f00491eb"
     response = requests.get(url)
     if (response.status_code) == 404:
         return None
@@ -51,4 +51,4 @@ def flatter(tu):
         l.append(i[0])
     return l
 
-add_stock_to_db('amd')
+add_stock_to_db('aapl')
