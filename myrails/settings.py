@@ -32,16 +32,26 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
 
+<<<<<<< HEAD
 	'myapp.apps.MyappConfig',
+=======
+	# 'myapp.apps.MyappConfig',
+>>>>>>> master
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'multiselectfield',
+    'myapp'
 ]
 
+<<<<<<< HEAD
 AUTH_PROFILE_MODULE = "myapp.Profile"
+=======
+
+>>>>>>> master
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
