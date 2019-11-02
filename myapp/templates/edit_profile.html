@@ -1,11 +1,8 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
 <h1>Update Your Profile</h1>
-
 <div class="container">
-
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <table>
@@ -14,21 +11,6 @@
         </table>
         <button type="submit">Submit</button>
     </form>
-
-    <!--<form method="post">-->
-    <!--{% csrf_token %}-->
-    <!--&lt;!&ndash;<div class="form-row field-image">&ndash;&gt;-->
-    <!--&lt;!&ndash;<div class="edit_profile_pic">&ndash;&gt;-->
-    <!--&lt;!&ndash;<img class="edit_profile_pic" src="{{user.profile.image.url }}" width="240">&ndash;&gt;-->
-    <!--&lt;!&ndash;<input type="file" name="image" accept="image/*" id="id_image">&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;</div>&ndash;&gt;-->
-    <!--&lt;!&ndash;<label> here are the info from User model -> myapp_auth table </label>&ndash;&gt;-->
-
-    <!--{{ form.as_p }}-->
-    <!--<button type="submit">Submit</button>-->
-
-    <!--</form>-->
 </div>
 {% endblock %}
 

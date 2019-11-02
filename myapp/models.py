@@ -1,7 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django import forms
-from multiselectfield import MultiSelectField
 import sqlite3
 
 STOCKS_CHOICES = ()
@@ -23,21 +21,19 @@ class Profile(models.Model):
     """ the user's profile model - created automatically by sending a signal when the user is created"""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg',upload_to='profile_pics')
-
     job = models.CharField(max_length=20, null=True, default=None)
-    # TODO : add more info fields
 
     dbconn = sqlite3.connect(DATABASE_NAME)
     cur = dbconn.cursor()
 
-    cur.execute("SELECT name,symbol FROM {}".format(STOCKS_DATABASE))
+    cur.execute("SELECT symbol,name FROM {}".format(STOCKS_DATABASE))
     rows = cur.fetchall()
     stocks_choice = []
     for row in rows:
         stocks_choice.append(row)
 
     STOCKS_CHOICES = tuple(stocks_choice)
-    my_stocks = models.CharField(max_length=50, blank=True,choices=STOCKS_CHOICES, default=STOCKS_CHOICES)
+    my_stocks = models.CharField(max_length=50, blank=True,choices=[choice for choice in STOCKS_CHOICES], default=[choice for choice in STOCKS_CHOICES])
     dbconn.close()
 
     def __str__(self):  # __unicode__ for Python 2
