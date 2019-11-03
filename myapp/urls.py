@@ -13,15 +13,9 @@ urlpatterns = [
 	path('accounts/logout/', views.logout_view, name='logout'),
 	path('accounts/register/', views.register, name='register'),
 	path('accounts/profile/', views.profile, name='profile'),
-<<<<<<< HEAD
 	path('accounts/profile/edit/', views.edit_profile, name='edit_profile'),
+	path('add_comment/', views.add_stock_comment, name='add_comment'),
 
 ]
-=======
-	path('accounts/profile/edit', views.edit_profile, name='edit_profile'),
-
-]
-
->>>>>>> master
 if settings.DEBUG:
 	urlpatterns += static (settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
