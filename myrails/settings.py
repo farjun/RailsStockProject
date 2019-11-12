@@ -31,12 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-
-<<<<<<< HEAD
-	'myapp.apps.MyappConfig',
-=======
-	# 'myapp.apps.MyappConfig',
->>>>>>> master
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,11 +41,7 @@ INSTALLED_APPS = [
     'myapp'
 ]
 
-<<<<<<< HEAD
 AUTH_PROFILE_MODULE = "myapp.Profile"
-=======
-
->>>>>>> master
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
