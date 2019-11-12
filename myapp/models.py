@@ -39,6 +39,9 @@ class Profile(models.Model):
 		return self.user.username
 #comment model
 class Comment(models.Model):
+	"""
+	This is the comment model. It includes : stock, author, text and created_date.
+	"""
 	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='comments')
 	author = models.CharField(max_length=200)
 	text = models.TextField()
@@ -46,3 +49,12 @@ class Comment(models.Model):
 
 	def __str__(self):
 		return self.text
+	
+class Notification(models.Model):
+	"""Notification model"""
+	notification_id = models.AutoField(primary_key=True)
+	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='stock_symbol')
+	message = models.TextField()
+	read = models.BooleanField(default=False)
+	created_date = models.DateTimeField(auto_now_add=True, blank=True)
+

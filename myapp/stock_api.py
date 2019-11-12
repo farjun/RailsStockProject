@@ -49,5 +49,7 @@ def get_stock_historic_prices(symbol, time_range='1m'):
 	return _request_data('/stable/stock/{symbol}/chart/{time_range}'.format(symbol=symbol, time_range=time_range))
 
 def get_currency():
+	"""This function returns the currency for a specific stock.
+	"""
 	
 	return _request_data('/beta/ref-data/symbols')
