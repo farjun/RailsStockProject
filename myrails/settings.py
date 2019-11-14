@@ -39,15 +39,16 @@ CELERY_TIMEZONE = 'UTC'
 # Application definition
 
 INSTALLED_APPS = [
-	'myapp',
+    'myapp',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
 ]
+
+AUTH_PROFILE_MODULE = "myapp.Profile"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,6 +129,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# the full path to the directory where to storage users uploaded profiles pics
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+# the public url of the above directory
+MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'myapp/static'),
@@ -135,3 +140,4 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
+
