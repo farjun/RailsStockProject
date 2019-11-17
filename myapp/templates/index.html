@@ -1,7 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<div class="dropdown" style="float: left; padding: 13px">
+        <a href="#" id="noti-btn" onclick="return false;" role="button" data-toggle="dropdown" id="dropdownMenu1" data-target="#" style="float: left" aria-expanded="true">
+            <i class="fa fa-bell-o" style="font-size: 20px; float: left; color: black">
+            </i>
+        </a>
+        <span class="badge badge-danger" id="12345">{{ notifs|length}}</span>
+        <ul class="dropdown-menu dropdown-menu-left pull-right" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation">
+                <a href="#" class="dropdown-menu-header">Notifications</a>
+            </li>
+            <ul class="timeline timeline-icons timeline-sm" style="margin:10px;width:210px">
+            {% for noti in notifs %}
+                <li>
+                <p>
+                    {{noti.message}} <a href="">here</a>
+                    <span class="timeline-icon"><i class="fa fa-file-pdf-o" style="color:red"></i></span>
+                    <span class="timeline-date">{{noti.created_date}}</span>
+                </p>
+            </li>
+            {% endfor %}
+            
+        </ul>
+            <li role="presentation">
+                <a href="#" class="dropdown-menu-header"></a>
+            </li>
+        </ul>
+    </div>
 
     <div>
     <form action="" method="get">
@@ -53,13 +79,59 @@
                 <td><button class="btn success">+</button></td>
             </tr>
             
-            
-            
-
         {% endfor %}
+
     </table>
-{% endblock %}
+
 
 <script type="text/javascript">
     document.getElementById("id_q").value = "{{query}}"
     </script>
+
+<!-- <script type="text/javascript">
+    document.getElementById("12345").textContent = '{{ notif|length }}'
+
+</script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+		<script>
+
+$(document).ready( function(notifs) {
+    $("#noti-btn").click(function(event){
+
+		$.ajax({
+            url: '',
+            datatype: 'json',
+            type: 'GET',
+            success: function(notifs) {
+				
+				console.log(JSON.parse("{{notifs|safe}}"))
+                
+					
+            }
+        });
+		})})
+		
+    </script>
+    
+{% endblock %}  
+ <!-- <script type="text/javascript"> -->
+<!--     
+// console.log(s)
+    
+// $(document).ready( function() {
+    
+//     $("#noti-btn").click(function(event) {
+        
+//         $.ajax({
+//     url: '',
+//     datatype: 'json',
+//     type: 'GET',
+//     success: function(data) {
+        
+            
+//     }
+// });
+// })})
+     
+// </script>  -->

@@ -4,7 +4,7 @@ from myapp.models import Stock
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
-from myapp.models import Comment
+from myapp.models import Comment,FollowedStocks,Notification
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django import utils
@@ -17,6 +17,17 @@ from celery.decorators import task
 from celery.task.schedules import crontab
 from celery.decorators import periodic_task
 
+def get_notifications_for_user():
+
+	s = []
+	followed_stocks = FollowedStocks.objects.filter(user_id='majd')
+
+	for obj in followed_stocks:
+		s.append(obj.stock_id)
+	
+	notifications = Notification.objects.filter(stock_id__in=s,read=0)
+	return notifications
+
 # View for the home page - a list of 20 of the most active stocks
 def index(request):
 	"""This function returns the top 20 most active stocks or returns stocks based on
@@ -27,15 +38,17 @@ def index(request):
 	:template:'myapp/templates/index.html'
 
 	"""
+	notifs = get_notifications_for_user()
+	
 	if request.GET.get('search'): # this will be GET now      
 		search_text = request.GET.get('search') # do some research what it does
 		
 		items = Stock.objects.filter(Q(symbol__icontains=search_text)
 		| Q(name__icontains=search_text))
-		return render(request,"index.html",{'page_title': 'Main', 'data': items })
+		return render(request,"index.html",{'page_title': 'Main', 'data': items ,'notifs': notifs})
 	else:
 		data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
-		return render(request, 'index.html', {'page_title': 'Main', 'data': data })
+		return render(request, 'index.html', {'page_title': 'Main', 'data': data ,'notifs': notifs })
 	
 # View for the single stock page
 # symbol is the requested stock's symbol ('AAPL' for Apple)

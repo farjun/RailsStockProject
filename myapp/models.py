@@ -33,3 +33,8 @@ class Notification(models.Model):
 	read = models.BooleanField(default=False)
 	created_date = models.DateTimeField(auto_now_add=True, blank=True)
 
+class FollowedStocks(models.Model):
+	"""Stocks followed model"""
+	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='followed_stocks')
+	user_id = models.CharField(max_length=10)
+
