@@ -1,34 +1,20 @@
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from myapp import stock_api
-from myapp.forms import  UpdateProfile, EditProfileForm, ProfileForm
-from myapp.models import Stock,Profile,Comment
-
-from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.db.models import Q
-from django.http import HttpResponseRedirect
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_protect
-
-from django.http import JsonResponse
-from django.contrib.auth.models import User
-from django.contrib.auth import logout
-from myapp.models import Comment,FollowedStocks,Notification
-from django.template import RequestContext
-from django.http import HttpResponseRedirect
-
-from django import utils
-from django.views.decorators.csrf import csrf_protect
-from django.utils.decorators import method_decorator
-from django.db.models import Q
-from myapp import notifications
 import json
+
+import sqlite3
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_protect
+
+from myapp import stock_api
+from myapp.forms import EditProfileForm, ProfileForm
+from myapp.models import Comment,FollowedStocks,Notification
+from myapp.models import Stock
+
 # from celery.decorators import task
 # from celery.task.schedules import crontab
 # from celery.decorators import periodic_task
@@ -70,19 +56,7 @@ def index(request):
         data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
         return render(request, 'index.html', {'page_title': 'Main', 'data': data, 'notifs': notifs})
 
-
-# def single_stock(request, symbol):
-#     """ View for the single stock page symbol is the requested stock's symbol ('AAPL' for Apple) """
-#     data = stock_api.get_stock_info(symbol)
-#     all_companies = stock_api.get_currency()
-#     #check for currency type and add it to data
-#     for object in all_companies:
-#         if object['symbol'] == symbol:
-#             currency = object['currency']
-#             break
-#     data['currency'] = currency
-#
-#     return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data})
+    return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data})
 
 def single_stock(request, symbol):
     """Returns stock's info and the related comments for this stock.
@@ -106,10 +80,27 @@ def single_stock(request, symbol):
     return render(request, 'single_stock.html',
                   {'page_title': 'Stock Page - %s' % symbol, 'data': data, 'comments': comments})
 
+STOCKS_CHOICES = ()
+DATABASE_NAME = 'db.sqlite3'
+STOCKS_DATABASE ='myapp_stock'
 
 @login_required
 def profile(request):
     """ the user's profile view """
+
+    # dbconn = sqlite3.connect(DATABASE_NAME)
+    # cur = dbconn.cursor()
+    #
+    # cur.execute("SELECT symbol,name FROM {}".format(STOCKS_DATABASE))
+    # rows = cur.fetchall()
+    # stocks_choice = []
+    # for row in rows:
+    #     stocks_choice.append(row)
+    #
+    # STOCKS_CHOICES = tuple(stocks_choice)
+    # my_stocks = [choice for choice in STOCKS_CHOICES]
+    # dbconn.close()
+
     return render(request, 'profile.html')
 
 def register(request):

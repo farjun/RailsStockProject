@@ -100,28 +100,24 @@
 
                 <p class="account-heading">JOB : {{ user.profile.job }}</p>
 
-                <label>Select your favorite stocks</label>
-                <select id="fav_stocks" name="fav_stocks[]" multiple class="form-control">
+                <!--<label>Select your favorite stocks</label>-->
+                <!--<select id="fav_stocks" name="fav_stocks[]" multiple class="form-control">-->
 
 
-                    {% for choice in user.profile.STOCKS_CHOICES %}
-                    <option>
-                        {{ choice }}
-                    </option>
-                    {% endfor %}
-                </select>
+                    <!--{% for choice in user.profile.STOCKS_CHOICES %}-->
+                    <!--<option>-->
+                        <!--{{ choice }}-->
+                    <!--</option>-->
+                    <!--{% endfor %}-->
+                <!--</select>-->
             </div>
-            <p>
-                The value of the option selected is:
-                <span class="output"></span>
-            </p>
-            <button onclick="getOption()">
-                Check option
-            </button>
-            <!--<div class="form-group">-->
-                <!--<button type="submit">Submit</button>-->
-                <!--&lt;!&ndash;<input type="submit" class="btn btn-info" name="submit" value="Submit"/>&ndash;&gt;-->
-            <!--</div>-->
+            <!--<p>-->
+                <!--The value of the option selected is:-->
+                <!--<span class="output"></span>-->
+            <!--</p>-->
+            <!--<button onclick="getOption()">-->
+                <!--Check option-->
+            <!--</button>-->
 
         </form>
 

@@ -13,7 +13,7 @@ class EditProfileForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('job', 'image', 'my_stocks')  # Note that we didn't mention user field here.
+        fields = ('job', 'image')  # Note that we didn't mention user field here.
 
 
 class UpdateProfile(forms.ModelForm):

@@ -2,19 +2,16 @@ from django.contrib.auth.models import User
 from django.db import models
 import sqlite3
 
-STOCKS_CHOICES = ()
-DATABASE_NAME = 'db.sqlite3'
-STOCKS_DATABASE ='myapp_stock'
 class Stock(models.Model):
     """ the Stock's model is used to create stocks for the project use """
     symbol = models.CharField(max_length=12, primary_key=True)
     name = models.CharField(max_length=64)
-    top_rank = models.IntegerField(null=True)
     price = models.FloatField()
     change = models.FloatField(null=True)
     change_percent = models.FloatField()
     market_cap = models.FloatField(null=True)
     primary_exchange = models.CharField(null=True, max_length=32)
+    top_rank = models.IntegerField(null=True)
 
 
 class Profile(models.Model):
@@ -23,47 +20,36 @@ class Profile(models.Model):
     image = models.ImageField(default='default.jpg',upload_to='profile_pics')
 
     job = models.CharField(max_length=20, null=True, default=None)
-    # TODO : add more info fields
+    # my_stocks = models.CharField(max_length=50, blank=True,null=True, default= None)
 
-    dbconn = sqlite3.connect(DATABASE_NAME)
-    cur = dbconn.cursor()
 
-    cur.execute("SELECT symbol,name FROM {}".format(STOCKS_DATABASE))
-    rows = cur.fetchall()
-    stocks_choice = []
-    for row in rows:
-        stocks_choice.append(row)
-
-    STOCKS_CHOICES = tuple(stocks_choice)
-    my_stocks = models.CharField(max_length=50, blank=True,choices=[choice for choice in STOCKS_CHOICES], default=[choice for choice in STOCKS_CHOICES])
-    dbconn.close()
 
     def __str__(self):  # __unicode__ for Python 2
         return self.user.username
 
 #comment model
 class Comment(models.Model):
-	"""
-	This is the comment model. It includes : stock, author, text and created_date.
-	"""
-	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='comments')
-	author = models.CharField(max_length=200)
-	text = models.TextField()
-	created_date = models.DateTimeField(auto_now_add=True, blank=True)
+    """
+    This is the comment model. It includes : stock, author, text and created_date.
+    """
+    stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='comments')
+    author = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True, blank=True)
 
-	def __str__(self):
-		return self.text
+    def __str__(self):
+        return self.text
 
 class Notification(models.Model):
-	"""Notification model"""
-	notification_id = models.AutoField(primary_key=True)
-	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='stock_symbol')
-	message = models.TextField()
-	read = models.BooleanField(default=False)
-	created_date = models.DateTimeField(auto_now_add=True, blank=True)
+    """Notification model"""
+    notification_id = models.AutoField(primary_key=True)
+    stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='stock_symbol')
+    message = models.TextField()
+    read = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True, blank=True)
 
 class FollowedStocks(models.Model):
-	"""Stocks followed model"""
-	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='followed_stocks')
-	user_id = models.CharField(max_length=10)
+    """Stocks followed model"""
+    stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='followed_stocks')
+    user_id = models.CharField(max_length=10)
 
