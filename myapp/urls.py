@@ -14,6 +14,7 @@ urlpatterns = [
 	path('accounts/register/', views.register, name='register'),
 	path('accounts/profile/', views.profile, name='profile'),
 	path('accounts/profile/edit/', views.edit_profile, name='edit_profile'),
+	path('add_comment/', views.add_stock_comment, name='add_comment'),
 
 ]
 if settings.DEBUG:

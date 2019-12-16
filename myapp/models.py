@@ -1,7 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django import forms
-from multiselectfield import MultiSelectField
 import sqlite3
 
 STOCKS_CHOICES = ()
@@ -30,15 +28,42 @@ class Profile(models.Model):
     dbconn = sqlite3.connect(DATABASE_NAME)
     cur = dbconn.cursor()
 
-    cur.execute("SELECT name,symbol FROM {}".format(STOCKS_DATABASE))
+    cur.execute("SELECT symbol,name FROM {}".format(STOCKS_DATABASE))
     rows = cur.fetchall()
     stocks_choice = []
     for row in rows:
         stocks_choice.append(row)
 
     STOCKS_CHOICES = tuple(stocks_choice)
-    my_stocks = models.CharField(max_length=50, blank=True,choices=STOCKS_CHOICES, default=STOCKS_CHOICES)
+    my_stocks = models.CharField(max_length=50, blank=True,choices=[choice for choice in STOCKS_CHOICES], default=[choice for choice in STOCKS_CHOICES])
     dbconn.close()
 
     def __str__(self):  # __unicode__ for Python 2
         return self.user.username
+
+#comment model
+class Comment(models.Model):
+	"""
+	This is the comment model. It includes : stock, author, text and created_date.
+	"""
+	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='comments')
+	author = models.CharField(max_length=200)
+	text = models.TextField()
+	created_date = models.DateTimeField(auto_now_add=True, blank=True)
+
+	def __str__(self):
+		return self.text
+
+class Notification(models.Model):
+	"""Notification model"""
+	notification_id = models.AutoField(primary_key=True)
+	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='stock_symbol')
+	message = models.TextField()
+	read = models.BooleanField(default=False)
+	created_date = models.DateTimeField(auto_now_add=True, blank=True)
+
+class FollowedStocks(models.Model):
+	"""Stocks followed model"""
+	stock = models.ForeignKey('Stock', on_delete=models.CASCADE, related_name='followed_stocks')
+	user_id = models.CharField(max_length=10)
+

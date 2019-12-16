@@ -5,26 +5,107 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from myapp import stock_api
 from myapp.forms import  UpdateProfile, EditProfileForm, ProfileForm
-from myapp.models import Stock,Profile
+from myapp.models import Stock,Profile,Comment
+
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.db.models import Q
+from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_protect
+
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import logout
+from myapp.models import Comment,FollowedStocks,Notification
+from django.template import RequestContext
+from django.http import HttpResponseRedirect
+
+from django import utils
+from django.views.decorators.csrf import csrf_protect
+from django.utils.decorators import method_decorator
+from django.db.models import Q
+from myapp import notifications
+import json
+# from celery.decorators import task
+# from celery.task.schedules import crontab
+# from celery.decorators import periodic_task
+
+def get_notifications_for_user():
+    s = []
+    followed_stocks = FollowedStocks.objects.filter(user_id='majd')
+
+    for obj in followed_stocks:
+        s.append(obj.stock_id)
+
+    notifications = Notification.objects.filter(stock_id__in=s, read=0)
+    return notifications
+
+# def index(request):
+#     """ View for the home page - a list of 20 of the most active stocks """
+#     # Query the stock table, filter for top ranked stocks and order by their rank.
+#     data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
+#     return render(request, 'index.html', {'page_title': 'Main', 'data': data })
 
 def index(request):
-    """ View for the home page - a list of 20 of the most active stocks """
-    # Query the stock table, filter for top ranked stocks and order by their rank.
-    data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
-    return render(request, 'index.html', {'page_title': 'Main', 'data': data })
+    """This function returns the top 20 most active stocks or returns stocks based on
+    the search field
+
+    **Template:**
+
+    :template:'myapp/templates/index.html'
+
+    """
+    notifs = get_notifications_for_user()
+
+    if request.GET.get('search'):  # this will be GET now
+        search_text = request.GET.get('search')  # do some research what it does
+
+        items = Stock.objects.filter(Q(symbol__icontains=search_text)
+                                     | Q(name__icontains=search_text))
+        return render(request, "index.html", {'page_title': 'Main', 'data': items, 'notifs': notifs})
+    else:
+        data = Stock.objects.filter(top_rank__isnull=False).order_by('top_rank')
+        return render(request, 'index.html', {'page_title': 'Main', 'data': data, 'notifs': notifs})
+
+
+# def single_stock(request, symbol):
+#     """ View for the single stock page symbol is the requested stock's symbol ('AAPL' for Apple) """
+#     data = stock_api.get_stock_info(symbol)
+#     all_companies = stock_api.get_currency()
+#     #check for currency type and add it to data
+#     for object in all_companies:
+#         if object['symbol'] == symbol:
+#             currency = object['currency']
+#             break
+#     data['currency'] = currency
+#
+#     return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data})
 
 def single_stock(request, symbol):
-    """ View for the single stock page symbol is the requested stock's symbol ('AAPL' for Apple) """
+    """Returns stock's info and the related comments for this stock.
+
+    **Template:**
+
+    :template:'myapp/templates/signle_stock.html'
+    """
+
+    with open('myapp/static/currencies.json', 'r') as f:
+        currency_json_obj = json.load(f)
+
     data = stock_api.get_stock_info(symbol)
-    all_companies = stock_api.get_currency()
-    #check for currency type and add it to data
-    for object in all_companies:
-        if object['symbol'] == symbol:
-            currency = object['currency']
-            break
+    comments = Comment.objects.filter(stock_id=symbol)
+
+    # Getting stock's currency
+    currency = currency_json_obj[symbol]
+    # adding currency key to data
     data['currency'] = currency
 
-    return render(request, 'single_stock.html', {'page_title': 'Stock Page - %s' % symbol, 'data': data})
+    return render(request, 'single_stock.html',
+                  {'page_title': 'Stock Page - %s' % symbol, 'data': data, 'comments': comments})
+
 
 @login_required
 def profile(request):
@@ -72,37 +153,45 @@ def edit_profile(request):
         args['profile_form'] = profile_form
         return render(request, 'edit_profile.html', args)
 
-#
-# @login_required
-# def edit_profile(request):
-#     """ for editing the user's profile(in db) and updating his info depending on the entered values"""
-#     args = {}
-#     if request.method == 'POST':
-#         #this way : instance edits the profile's db
-#         form = UpdateProfile(request.POST, instance=request.user)
-#         form.actual_user = request.user
-#
-#         # profile = Profile(id = form.actual_user.id,image = form.actual_user.profile.image.url , my_stocks=form.actual_user.profile.my_stocks,user_id=form.actual_user.id,job=form.actual_user.profile.job)
-#         # profile.save()
-#         if form.is_valid():
-#             form.save()
-#             return redirect('profile')
-#     else:
-#         # the instance=request.user : gets the user saved info
-#         form = UpdateProfile(instance=request.user)
-#         args = {'form': form}
-#         return render(request, 'edit_profile.html', args)
+
 
 def logout_view(request):
     """ log the user out from his account and return him the home page"""
     logout(request)
     return redirect('index')
 
+# def single_stock_historic(request, symbol):
+#     """
+#     API for a stock's price over time
+#     symbol is the requested stock's symbol ('AAPL' for Apple)
+#     The response is JSON data of an array composed of "snapshot" objects (date + stock info + ...), usually one per day
+#     """
+#     data = stock_api.get_stock_historic_prices(symbol, time_range='1m')
+#     return JsonResponse({'data': data})
+
 def single_stock_historic(request, symbol):
-    """
-    API for a stock's price over time
-    symbol is the requested stock's symbol ('AAPL' for Apple)
-    The response is JSON data of an array composed of "snapshot" objects (date + stock info + ...), usually one per day
-    """
-    data = stock_api.get_stock_historic_prices(symbol, time_range='1m')
-    return JsonResponse({'data': data})
+	"""
+	Returns JSON object for a specific stock.
+	"""
+	data = stock_api.get_stock_historic_prices(symbol, time_range='1m')
+	return JsonResponse({'data': data})
+
+@csrf_protect
+def add_stock_comment(request):
+	"""This function adds comments to Comments table for a specific stock .
+
+	**Template:**
+
+	:template:'myapp/templates/signle_stock.html'
+	"""
+	if request.method == 'POST':
+
+		if request.POST.get('name') and request.POST.get('content'):
+			comment= Comment()
+			comment.author = request.POST.get('name')
+			comment.text= request.POST.get('content')
+			comment.stock_id = request.POST.get('stock_symbol')
+			symbol = request.POST.get('stock_symbol')
+			comment.save()
+
+			return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
