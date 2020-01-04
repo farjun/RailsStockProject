@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
 from django.db import models
 import sqlite3
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-STOCKS_CHOICES = ()
-DATABASE_NAME = 'db.sqlite3'
-STOCKS_DATABASE ='myapp_stock'
+
 class Stock(models.Model):
 	""" the Stock's model is used to create stocks for the project use """
 	symbol = models.CharField(max_length=12, primary_key=True)
@@ -24,6 +24,15 @@ class Profile(models.Model):
 
 	def __str__(self):  # __unicode__ for Python 2
 		return self.user.username
+	
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+	if created:
+		Profile.objects.create(user=instance)
+	instance.profile.save()
+	
+	
 #comment model
 class Comment(models.Model):
 	"""
