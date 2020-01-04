@@ -13,4 +13,4 @@ class ProfileForm(forms.ModelForm):
     """ user's profile form"""
     class Meta:
         model = Profile
-        fields = ('job', 'image', 'my_stocks')  # Note that we didn't mention user field here.
+        fields = ('job', 'image')  # Note that we didn't mention user field here.
