@@ -20,13 +20,16 @@ class Profile(models.Model):
     image = models.ImageField(default='default.jpg',upload_to='profile_pics')
 
     job = models.CharField(max_length=20, null=True, default=None)
-    # my_stocks = models.CharField(max_length=50, blank=True,null=True, default= None)
-
-
 
     def __str__(self):  # __unicode__ for Python 2
         return self.user.username
-
+    
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+	if created:
+		Profile.objects.create(user=instance)
+	instance.profile.save()
+    
 #comment model
 class Comment(models.Model):
     """
