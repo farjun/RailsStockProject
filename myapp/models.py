@@ -22,19 +22,6 @@ class Profile(models.Model):
 	image = models.ImageField(default='default.jpg',upload_to='profile_pics')
 	job = models.CharField(max_length=20, null=True, default=None)
 
-	dbconn = sqlite3.connect(DATABASE_NAME)
-	cur = dbconn.cursor()
-
-	cur.execute("SELECT symbol,name FROM {}".format(STOCKS_DATABASE))
-	rows = cur.fetchall()
-	stocks_choice = []
-	for row in rows:
-		stocks_choice.append(row)
-
-	STOCKS_CHOICES = tuple(stocks_choice)
-	my_stocks = models.CharField(max_length=50, blank=True,choices=[choice for choice in STOCKS_CHOICES], default=[choice for choice in STOCKS_CHOICES])
-	dbconn.close()
-
 	def __str__(self):  # __unicode__ for Python 2
 		return self.user.username
 #comment model
